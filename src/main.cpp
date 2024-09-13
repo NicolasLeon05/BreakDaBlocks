@@ -53,7 +53,7 @@ void MoveBall();
 
 void CheckWallColission();
 
-
+void MovePlayer();
 
 int main(int args, char* argv[])
 {
@@ -81,6 +81,7 @@ int main(int args, char* argv[])
         slCircleFill(ball.x, ball.y, ball.radius, 100);
         slRectangleFill(player.paddle.x, player.paddle.y, player.paddle.width, player.paddle.height);
         MoveBall();
+        MovePlayer();
         CheckWallColission();
 
         slRender();
@@ -121,4 +122,24 @@ void CheckWallColission()
 			ball.y = limitDown + ball.radius;
 	}
 
+}
+
+void MovePlayer()
+{
+    if (slGetKey(SL_KEY_LEFT) && player.paddle.x - player.paddle.width / 2 > 0)
+    {
+        player.paddle.x -= player.speed * slGetDeltaTime();
+    }
+    else if (player.paddle.x - player.paddle.width / 2 < 0)
+    {
+        player.paddle.x = player.paddle.width / 2;
+    }
+    else if (slGetKey(SL_KEY_RIGHT) && player.paddle.x + player.paddle.width / 2 < screenWidth)
+    {
+        player.paddle.x += player.speed * slGetDeltaTime();
+    }
+    else if (player.paddle.x + player.paddle.width / 2 > screenWidth)
+    {
+        player.paddle.x = screenWidth - player.paddle.width / 2;
+    }
 }

@@ -7,6 +7,6 @@ C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(108,24): warning C4244: '=': con
 C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(111,23): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
 C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(119,21): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
 C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(122,23): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(131,41): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(139,41): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(134,41): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Aula 1\Downloads\TP_Sigil\src\main.cpp(141,42): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
   Sigil.vcxproj -> C:\Users\Aula 1\Downloads\TP_Sigil\bin\Debug\Sigil.exe

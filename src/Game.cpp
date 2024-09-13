@@ -29,7 +29,7 @@ void Init()
 	slWindow(screenWidth, screenHeight, "Simple SIGIL Example", false);
 	slSetTextAlign(SL_ALIGN_CENTER);
 
-
+	InitGameplay();
 }
 
 void Update()
@@ -40,6 +40,7 @@ void Update()
 void Draw()
 {
 	DrawGameplay();
+	slRender();
 }
 
 

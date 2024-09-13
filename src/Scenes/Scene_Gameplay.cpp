@@ -4,6 +4,8 @@
 #include "Constants.h"
 #include "sl.h"
 
+const char KEY_SPACE = 32;
+
 void MoveBall();
 
 void CheckWallColission();
@@ -12,6 +14,7 @@ void CheckPaddleColission();
 
 void MovePlayer();
 
+void LaunchBall();
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 void InitGameplay()
@@ -22,7 +25,11 @@ void InitGameplay()
 
 void UpdateGameplay()
 {
-	MoveBall();
+	//La pelota se deberia mover solo cuando presiono start
+
+	if(ball.hasBeenLaunched)
+		MoveBall();
+
 	MovePlayer();
 
 	CheckWallColission();
@@ -39,7 +46,6 @@ void DrawGameplay()
 	BLUE
 		slRectangleFill(player.paddle.x, player.paddle.y, player.paddle.width, player.paddle.height);
 
-	slRender();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +55,6 @@ void MoveBall()
 	ball.x += ball.speedX * slGetDeltaTime();
 	ball.y += ball.speedY * slGetDeltaTime();
 }
-
 
 void CheckWallColission()
 {
@@ -72,11 +77,14 @@ void CheckWallColission()
 			ball.y = limitUp - ball.radius;
 
 		if (ball.y <= limitDown)
+		{
 			ball.y = limitDown + ball.radius;
+			LoseLife();
+		}
+
 	}
 
 }
-
 
 void CheckPaddleColission()
 {
@@ -114,6 +122,10 @@ void CheckPaddleColission()
 
 void MovePlayer()
 {
+	//Ball follows player
+	if (!ball.hasBeenLaunched)
+		ball.x = player.paddle.x;
+
 	if (slGetKey(SL_KEY_LEFT))
 	{
 		if (player.paddle.x - player.paddle.width / 2 <= 0)
@@ -128,4 +140,12 @@ void MovePlayer()
 		else
 			player.paddle.x += player.speed * slGetDeltaTime();
 	}
+	else if (slGetKey(KEY_SPACE))
+		LaunchBall();
+}
+
+void LaunchBall()
+{
+	if (!ball.hasBeenLaunched)
+		ball.hasBeenLaunched = true;
 }

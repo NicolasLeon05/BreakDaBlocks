@@ -10,6 +10,7 @@ struct Ball
 	float speedX;
 	float speedY;
 	bool isColiding;
+	bool hasBeenLaunched;
 };
 
 extern Ball ball;

@@ -17,5 +17,3 @@ const int limitLeft = limitDown;
 const int limitRight = screenWidth - limitLeft;
 
 const int paddleSpeed = 700;
-
-const int lives = 5;

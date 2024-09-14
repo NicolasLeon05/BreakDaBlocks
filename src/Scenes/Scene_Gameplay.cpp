@@ -16,6 +16,8 @@ void MovePlayer();
 
 void LaunchBall();
 
+void LoseLife();
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 void InitGameplay()
 {
@@ -148,4 +150,10 @@ void LaunchBall()
 {
 	if (!ball.hasBeenLaunched)
 		ball.hasBeenLaunched = true;
+}
+
+void LoseLife()
+{
+	player.lives--;
+	InitBall();
 }

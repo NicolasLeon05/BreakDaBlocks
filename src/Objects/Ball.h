@@ -4,9 +4,9 @@
 struct Ball
 {
 	const int radius = limitDown;
+	const float baseSpeed = 400.0f;
 	float x;
 	float y;
-	const float baseSpeed = 400.0f;
 	float speedX;
 	float speedY;
 	bool isColiding;

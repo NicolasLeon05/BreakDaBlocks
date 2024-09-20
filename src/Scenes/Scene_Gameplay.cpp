@@ -7,17 +7,13 @@
 
 const char KEY_SPACE = 32;
 
-void MoveBall();
-
 void CheckWallColission();
-
 bool CheckRecColission(Rectangle rectangle, Ball& ball);
-
 void CollideWithPlayer(Player player, Ball& ball);
-
 void CollideWithBlock(Block block, Ball& ball);
-
 void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball);
+
+void MoveBall();
 
 void MovePlayer();
 
@@ -25,8 +21,10 @@ void LaunchBall();
 
 void LoseLife();
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////
-void InitGameplay()
+void InitGameplay() //Cambiar a Init y usar namespace
 {
 	InitPlayer();
 	InitBall();
@@ -35,7 +33,6 @@ void InitGameplay()
 
 void UpdateGameplay()
 {
-	//La pelota se deberia mover solo cuando presiono space
 	if(ball.hasBeenLaunched)
 		MoveBall();
 
@@ -181,7 +178,6 @@ void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball)
 					CollideWithBlock(blocks[i][j], ball);
 					blocks[i][j].isDestroyed = true;
 				}
-
 			}
 		}
 	}

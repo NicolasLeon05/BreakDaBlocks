@@ -1,7 +1,7 @@
 #include "Block.h"
 #include "sl.h"
-#include <iostream>
-using namespace std;
+
+
 
 Block blocks[blockRows][blockCols];
 
@@ -16,7 +16,7 @@ void InitBlocks()
 		{
 			blocks[i][j].rectangle.height = blockHeight;
 			blocks[i][j].rectangle.width = blockWidth;
-			blocks[i][j].rectangle.x = startPosX + (blockWidth * j) + 3;
+			blocks[i][j].rectangle.x = startPosX + (blockWidth * j);
 			blocks[i][j].rectangle.y = startPosY - (blockHeight * i);
 			blocks[i][j].isDestroyed = false;
 		}

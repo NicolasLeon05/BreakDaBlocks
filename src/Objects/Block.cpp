@@ -2,7 +2,6 @@
 #include "sl.h"
 
 
-
 Block blocks[blockRows][blockCols];
 
 void InitBlocks()

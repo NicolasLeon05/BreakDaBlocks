@@ -6,8 +6,9 @@
 #include "Block.h"
 
 const char KEY_SPACE = 32;
+float deathTimer = 0.0f;
 
-void CheckWallColission();
+void CheckWallColission(Ball& ball);
 bool CheckRecColission(Rectangle rectangle, Ball& ball);
 void CollideWithPlayer(Player player, Ball& ball);
 void CollideWithBlock(Block block, Ball& ball);
@@ -15,16 +16,16 @@ void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball);
 
 void MoveBall();
 
+void LoseLife();
+
 void MovePlayer();
 
 void LaunchBall();
 
-void LoseLife();
-
-
+void AccelerateBall(Ball& ball);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-void InitGameplay() //Cambiar a Init y usar namespace
+void InitGameplay() //Cambiar a Init solo y usar namespace
 {
 	InitPlayer();
 	InitBall();
@@ -38,7 +39,7 @@ void UpdateGameplay()
 
 	MovePlayer();
 
-	CheckWallColission();
+	CheckWallColission(ball);
 	CollideWithPlayer(player, ball);
 	CheckBlockDestruction(blocks, ball);
 }
@@ -65,7 +66,7 @@ void MoveBall()
 	ball.y += ball.speedY * slGetDeltaTime();
 }
 
-void CheckWallColission()
+void CheckWallColission(Ball& ball)
 {
 	//Lateral colission
 	if (ball.x >= limitRight || ball.x <= limitLeft)
@@ -92,7 +93,13 @@ void CheckWallColission()
 		}
 
 	}
+}
 
+void LoseLife()
+{
+	player.lives--;
+
+	InitBall();
 }
 
 bool CheckRecColission(Rectangle rectangle, Ball& ball)
@@ -177,6 +184,7 @@ void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball)
 				{
 					CollideWithBlock(blocks[i][j], ball);
 					blocks[i][j].isDestroyed = true;
+					AccelerateBall(ball);
 				}
 			}
 		}
@@ -203,7 +211,8 @@ void MovePlayer()
 		else
 			player.paddle.x += player.speed * slGetDeltaTime();
 	}
-	else if (slGetKey(KEY_SPACE))
+
+	if (slGetKey(KEY_SPACE))
 		LaunchBall();
 }
 
@@ -213,8 +222,9 @@ void LaunchBall()
 		ball.hasBeenLaunched = true;
 }
 
-void LoseLife()
+void AccelerateBall(Ball& ball)
 {
-	player.lives--;
-	InitBall();
+	float accelerationRate = 1.03;
+	ball.speedY *= accelerationRate;
+	ball.speedX *= accelerationRate;
 }

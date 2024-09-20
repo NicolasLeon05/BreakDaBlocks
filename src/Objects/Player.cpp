@@ -9,7 +9,7 @@ void InitPlayer()
 	player.paddle.x = screenWidth / 2;
 	player.paddle.y = 50.0f;
 	player.paddle.width = screenWidth / 6;
-	player.paddle.height = 20.0f;
+	player.paddle.height = screenHeight / 32;
 	player.speed = 500.0f;
 	player.lives = 5;
 }

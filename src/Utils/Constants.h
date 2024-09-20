@@ -1,5 +1,6 @@
 #pragma once
 
+//Cambiar
 #define RED slSetForeColor(255, 0, 0, 1);
 #define GREEN slSetForeColor(0, 255, 0, 1);
 #define BLUE slSetForeColor(0, 0, 255, 1);
@@ -16,4 +17,11 @@ const int limitUp = screenHeight - limitDown;
 const int limitLeft = limitDown;
 const int limitRight = screenWidth - limitLeft;
 
+//Blocks
+const float blockWidth = 106; //screenWidth / 12;
+const float blockHeight = 36; //screenHeight / 20;
+const int blockCols = 12; //screenWidth/ blockWidth;
+const int blockRows = 6; //(screenHeight / 3) / blockHeight;
+
+//Paddle Speed
 const int paddleSpeed = 700;

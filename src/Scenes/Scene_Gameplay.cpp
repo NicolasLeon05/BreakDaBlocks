@@ -6,6 +6,7 @@
 #include "Block.h"
 #include <cmath>
 
+
 const char KEY_SPACE = 32;
 float deathTimer = 0.0f;
 
@@ -24,6 +25,8 @@ void MovePlayer();
 void LaunchBall();
 
 void AccelerateBall(Ball& ball);
+
+float Clamp(float value, float min, float max);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 void InitGameplay() //Cambiar a Init solo y usar namespace
@@ -123,13 +126,18 @@ void CollideWithPlayer(Player player, Ball& ball)
 {
 	if (CheckRecCollision(player.paddle, ball))
 	{
-		//ball.speedY *= -1;
+		const float maxAngleDegrees = 60.0f;
+		const float maxAngleRadians = maxAngleDegrees * (3.141592653589793f / 180.0f);
 
-		float relativeIntersectX = (player.paddle.x + (player.paddle.width / 2)) - ball.x;
-		float normalizedRelativeIntersectionX = (relativeIntersectX / (player.paddle.width / 2));
-		float bounceAngle = normalizedRelativeIntersectionX * ball.maxBounceAngle;
-		ball.speedX = ball.baseSpeed * cos(bounceAngle);
-		ball.speedY = ball.baseSpeed * sin(bounceAngle);
+		//Relative position of the ball on the paddle
+		float relativeX = (ball.x - player.paddle.x) / (player.paddle.width / 2);
+
+		//Limits that value between -1 and 1
+		relativeX = Clamp(relativeX, -1.0f, 1.0f);
+		float bounceAngle = relativeX * maxAngleRadians;
+
+		ball.speedX = ball.baseSpeed * sin(bounceAngle);
+		ball.speedY = ball.baseSpeed * cos(bounceAngle);
 
 		//Old collison
 		/*if (!ball.isColiding)
@@ -238,4 +246,10 @@ void AccelerateBall(Ball& ball)
 	ball.baseSpeed *= accelerationRate;
 	ball.speedY *= accelerationRate;
 	ball.speedX *= accelerationRate	;
+}
+
+float Clamp(float value, float min, float max) {
+	if (value < min) return min;
+	if (value > max) return max;
+	return value;
 }

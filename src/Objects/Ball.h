@@ -4,11 +4,12 @@
 struct Ball
 {
 	const int radius = limitDown;
-	const float baseSpeed = 400.0f;
+	float baseSpeed;
 	float x;
 	float y;
 	float speedX;
 	float speedY;
+	float maxBounceAngle;
 	bool isColiding;
 	bool hasBeenLaunched;
 };

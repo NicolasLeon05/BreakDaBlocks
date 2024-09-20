@@ -4,12 +4,13 @@
 #include "Player.h"
 #include "Constants.h"
 #include "Block.h"
+#include <cmath>
 
 const char KEY_SPACE = 32;
 float deathTimer = 0.0f;
 
-void CheckWallColission(Ball& ball);
-bool CheckRecColission(Rectangle rectangle, Ball& ball);
+void CheckWallCollision(Ball& ball);
+bool CheckRecCollision(Rectangle rectangle, Ball& ball);
 void CollideWithPlayer(Player player, Ball& ball);
 void CollideWithBlock(Block block, Ball& ball);
 void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball);
@@ -39,7 +40,7 @@ void UpdateGameplay()
 
 	MovePlayer();
 
-	CheckWallColission(ball);
+	CheckWallCollision(ball);
 	CollideWithPlayer(player, ball);
 	CheckBlockDestruction(blocks, ball);
 }
@@ -66,9 +67,9 @@ void MoveBall()
 	ball.y += ball.speedY * slGetDeltaTime();
 }
 
-void CheckWallColission(Ball& ball)
+void CheckWallCollision(Ball& ball)
 {
-	//Lateral colission
+	//Lateral collision
 	if (ball.x >= limitRight || ball.x <= limitLeft)
 	{
 		ball.speedX *= -1;
@@ -79,7 +80,7 @@ void CheckWallColission(Ball& ball)
 			ball.x = limitLeft + ball.radius;
 	}
 
-	//Top/bottom colission
+	//Top/bottom collision
 	if (ball.y >= limitUp || ball.y <= limitDown)
 	{
 		ball.speedY *= -1;
@@ -102,7 +103,7 @@ void LoseLife()
 	InitBall();
 }
 
-bool CheckRecColission(Rectangle rectangle, Ball& ball)
+bool CheckRecCollision(Rectangle rectangle, Ball& ball)
 {
 	if (rectangle.x + rectangle.width / 2 >= ball.x - ball.radius &&
 		rectangle.x - rectangle.width / 2 <= ball.x + ball.radius &&
@@ -120,14 +121,23 @@ bool CheckRecColission(Rectangle rectangle, Ball& ball)
 
 void CollideWithPlayer(Player player, Ball& ball)
 {
-	if (CheckRecColission(player.paddle, ball))
+	if (CheckRecCollision(player.paddle, ball))
 	{
-		if (!ball.isColiding)
+		//ball.speedY *= -1;
+
+		float relativeIntersectX = (player.paddle.x + (player.paddle.width / 2)) - ball.x;
+		float normalizedRelativeIntersectionX = (relativeIntersectX / (player.paddle.width / 2));
+		float bounceAngle = normalizedRelativeIntersectionX * ball.maxBounceAngle;
+		ball.speedX = ball.baseSpeed * cos(bounceAngle);
+		ball.speedY = ball.baseSpeed * sin(bounceAngle);
+
+		//Old collison
+		/*if (!ball.isColiding)
 		{
 			ball.isColiding = true;
 			ball.speedY *= -1;
 
-			//Colission on the sides
+			//collision on the sides
 			if (ball.x < player.paddle.x - player.paddle.width / 2 || ball.x > player.paddle.x + player.paddle.width / 2)
 			{
 				ball.speedX *= -1;
@@ -143,8 +153,8 @@ void CollideWithPlayer(Player player, Ball& ball)
 				ball.y = player.paddle.y + player.paddle.height / 2 + ball.radius + 1;
 			}
 		}
+		*/
 	}
-	
 }
 
 void CollideWithBlock(Block block, Ball& ball)
@@ -154,7 +164,7 @@ void CollideWithBlock(Block block, Ball& ball)
 		ball.isColiding = true;
 		ball.speedY *= -1;
 
-		//Colission on the sides
+		//collision on the sides
 		if (ball.x < block.rectangle.x - block.rectangle.width / 2 || ball.x > block.rectangle.x + block.rectangle.width / 2)
 		{
 			ball.speedX *= -1;
@@ -180,7 +190,7 @@ void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball)
 		{
 			if (!blocks[i][j].isDestroyed)
 			{
-				if (CheckRecColission(blocks[i][j].rectangle, ball))
+				if (CheckRecCollision(blocks[i][j].rectangle, ball))
 				{
 					CollideWithBlock(blocks[i][j], ball);
 					blocks[i][j].isDestroyed = true;
@@ -225,6 +235,7 @@ void LaunchBall()
 void AccelerateBall(Ball& ball)
 {
 	float accelerationRate = 1.03;
+	ball.baseSpeed *= accelerationRate;
 	ball.speedY *= accelerationRate;
-	ball.speedX *= accelerationRate;
+	ball.speedX *= accelerationRate	;
 }

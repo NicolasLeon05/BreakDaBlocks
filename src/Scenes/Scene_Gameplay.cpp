@@ -13,7 +13,11 @@ void CheckWallColission();
 
 bool CheckRecColission(Rectangle rectangle, Ball& ball);
 
-void CheckBlockDestruction(Block blocks[blockRows][blockCols]);
+void CollideWithPlayer(Player player, Ball& ball);
+
+void CollideWithBlock(Block block, Ball& ball);
+
+void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball);
 
 void MovePlayer();
 
@@ -32,15 +36,14 @@ void InitGameplay()
 void UpdateGameplay()
 {
 	//La pelota se deberia mover solo cuando presiono space
-
 	if(ball.hasBeenLaunched)
 		MoveBall();
 
 	MovePlayer();
 
 	CheckWallColission();
-	CheckRecColission(player.paddle, ball);
-	CheckBlockDestruction(blocks);
+	CollideWithPlayer(player, ball);
+	CheckBlockDestruction(blocks, ball);
 }
 
 void DrawGameplay()
@@ -102,26 +105,6 @@ bool CheckRecColission(Rectangle rectangle, Ball& ball)
 		rectangle.y + rectangle.height / 2 >= ball.y - ball.radius &&
 		rectangle.y - rectangle.height / 2 <= ball.y + ball.radius)
 	{
-		if (!ball.isColiding)
-		{
-			ball.isColiding = true;
-			ball.speedY *= -1;
-
-			//Colission on the sides of the paddle
-			if (ball.x < rectangle.x - rectangle.width / 2 || ball.x > rectangle.x + rectangle.width / 2)
-			{
-				ball.speedX *= -1;
-				//Corrects ball position y
-				if (ball.x < rectangle.x - rectangle.width / 2)
-					ball.x = rectangle.x - rectangle.width / 2 - ball.radius - 1;
-				else
-					ball.x = rectangle.x + rectangle.width / 2 + ball.radius + 1;
-			}
-			else
-			{
-				//Corrects ball position X
-			}
-		}
 		return true;
 	}
 	else
@@ -131,15 +114,75 @@ bool CheckRecColission(Rectangle rectangle, Ball& ball)
 	}
 }
 
-void CheckBlockDestruction(Block blocks[blockRows][blockCols])
+void CollideWithPlayer(Player player, Ball& ball)
+{
+	if (CheckRecColission(player.paddle, ball))
+	{
+		if (!ball.isColiding)
+		{
+			ball.isColiding = true;
+			ball.speedY *= -1;
+
+			//Colission on the sides
+			if (ball.x < player.paddle.x - player.paddle.width / 2 || ball.x > player.paddle.x + player.paddle.width / 2)
+			{
+				ball.speedX *= -1;
+				//Corrects ball position x
+				if (ball.x < player.paddle.x - player.paddle.width / 2)
+					ball.x = player.paddle.x - player.paddle.width / 2 - ball.radius - 1;
+				else
+					ball.x = player.paddle.x + player.paddle.width / 2 + ball.radius + 1;
+			}
+			else if(player.paddle.y + player.paddle.height / 2 >= ball.y - ball.radius)
+			{
+				//Corrects ball position y
+				ball.y = player.paddle.y + player.paddle.height / 2 + ball.radius + 1;
+			}
+		}
+	}
+	
+}
+
+void CollideWithBlock(Block block, Ball& ball)
+{
+	if (!ball.isColiding)
+	{
+		ball.isColiding = true;
+		ball.speedY *= -1;
+
+		//Colission on the sides
+		if (ball.x < block.rectangle.x - block.rectangle.width / 2 || ball.x > block.rectangle.x + block.rectangle.width / 2)
+		{
+			ball.speedX *= -1;
+			ball.speedY *= -1;
+			//Corrects ball position x
+			if (ball.x < block.rectangle.x - block.rectangle.width / 2)
+				ball.x = block.rectangle.x - block.rectangle.width / 2 - ball.radius - 1;
+			else
+				ball.x = block.rectangle.x + block.rectangle.width / 2 + ball.radius + 1;
+		}
+		else
+		{
+			//Corrects ball position y
+		}
+	}
+}
+
+void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball)
 {
 	for (int i = 0; i < blockRows; i++)
 	{
 		for (int j = 0; j < blockCols; j++)
 		{
-			if (CheckRecColission(blocks[i][j].rectangle, ball))
-				blocks[i][j].isDestroyed = true;
+			if (!blocks[i][j].isDestroyed)
+			{
+				if (CheckRecColission(blocks[i][j].rectangle, ball))
+				{
+					CollideWithBlock(blocks[i][j], ball);
+					blocks[i][j].isDestroyed = true;
+				}
 
+			}
 		}
 	}
 }

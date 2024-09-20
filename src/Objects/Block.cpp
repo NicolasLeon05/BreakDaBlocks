@@ -8,7 +8,7 @@ Block blocks[blockRows][blockCols];
 void InitBlocks()
 {
 	float startPosX = blockWidth / 2;
-	float startPosY = limitUp - blockHeight / 2;
+	float startPosY = limitUp - blockHeight * 2;
 
 	for (int i = 0; i < blockRows; i++)
 	{

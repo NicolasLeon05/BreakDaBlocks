@@ -20,8 +20,9 @@ const int limitRight = screenWidth - limitLeft;
 //Blocks
 const float blockWidth = 106; //screenWidth / 12;
 const float blockHeight = 36; //screenHeight / 20;
-const int blockCols = 12; //screenWidth/ blockWidth;
+const int blockCols = 12; //screenWidth / blockWidth;
 const int blockRows = 6; //(screenHeight / 3) / blockHeight;
+const int totalBlocks = blockCols * blockRows; //72
 
 //Paddle Speed
 const int paddleSpeed = 700;

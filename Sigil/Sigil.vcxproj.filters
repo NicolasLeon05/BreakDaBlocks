@@ -30,6 +30,9 @@
     <ClCompile Include="..\src\Scenes\Scene_Gameplay.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Objects\Block.cpp">
+      <Filter>Archivos de encabezado</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Utils\Constants.h">
@@ -48,6 +51,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Scenes\Scene_Gameplay.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Objects\Block.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

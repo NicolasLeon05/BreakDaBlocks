@@ -43,6 +43,7 @@ namespace Game
 
 	void Draw()
 	{
+		slText(screenWidth / 2, screenHeight / 2, "hola");
 		Gameplay::Draw();
 		slRender();
 	}

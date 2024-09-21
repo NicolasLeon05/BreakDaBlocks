@@ -7,14 +7,15 @@
 #include <cmath>
 
 
-const char KEY_SPACE = 32;
-float deathTimer = 0.0f;
+static const char KEY_SPACE = 32;
+static float deathTimer = 0.0f;
+static bool lifeLost = false;
 
-void CheckWallCollision(Ball& ball);
-bool CheckRecCollision(Rectangle rectangle, Ball& ball);
-void CollideWithPlayer(Player player, Ball& ball);
-void CollideWithBlock(Block block, Ball& ball);
-void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball);
+void CheckWallCollision();
+bool CheckRecCollision(Rectangle rectangle);
+void CollideWithPlayer();
+void CollideWithBlock(Block block);
+void CheckBlockDestruction(Block blocks[blockRows][blockCols]);
 
 void MoveBall();
 
@@ -24,7 +25,7 @@ void MovePlayer();
 
 void LaunchBall();
 
-void AccelerateBall(Ball& ball);
+void AccelerateBall();
 
 float Clamp(float value, float min, float max);
 
@@ -38,21 +39,37 @@ void InitGameplay() //Cambiar a Init solo y usar namespace
 
 void UpdateGameplay()
 {
-	if(ball.hasBeenLaunched)
+	if (!lifeLost)
+	{
 		MoveBall();
+		CheckWallCollision();
+		CollideWithPlayer();
+		CheckBlockDestruction(blocks);
+	}
+	else
+	{
+		deathTimer += slGetDeltaTime();
+		if (deathTimer > 1)
+		{
+			deathTimer = 0.0f;
+			lifeLost = false;
+			InitBall();
+		}
+	}
 
 	MovePlayer();
-
-	CheckWallCollision(ball);
-	CollideWithPlayer(player, ball);
-	CheckBlockDestruction(blocks, ball);
 }
 
 void DrawGameplay()
 {
-	//Draw Ball
-	RED
-		slCircleFill(ball.x, ball.y, ball.radius, 100);
+	
+	if (!lifeLost)
+	{
+		//Draw Ball
+		RED
+			slCircleFill(ball.x, ball.y, ball.radius, 100);
+	}
+	
 
 	//Draw player
 	BLUE
@@ -66,11 +83,19 @@ void DrawGameplay()
 
 void MoveBall()
 {
-	ball.x += ball.speedX * slGetDeltaTime();
-	ball.y += ball.speedY * slGetDeltaTime();
+	//Ball follows player
+	if (!ball.hasBeenLaunched)
+	{
+		ball.x = player.paddle.x;
+	}
+	else
+	{
+		ball.x += ball.speedX * slGetDeltaTime();
+		ball.y += ball.speedY * slGetDeltaTime();
+	}
 }
 
-void CheckWallCollision(Ball& ball)
+void CheckWallCollision()
 {
 	//Lateral collision
 	if (ball.x >= limitRight || ball.x <= limitLeft)
@@ -88,7 +113,9 @@ void CheckWallCollision(Ball& ball)
 	{
 		ball.speedY *= -1;
 		if (ball.y >= limitUp)
+		{
 			ball.y = limitUp - ball.radius;
+		}
 
 		if (ball.y <= limitDown)
 		{
@@ -102,11 +129,10 @@ void CheckWallCollision(Ball& ball)
 void LoseLife()
 {
 	player.lives--;
-
-	InitBall();
+	lifeLost = true;
 }
 
-bool CheckRecCollision(Rectangle rectangle, Ball& ball)
+bool CheckRecCollision(Rectangle rectangle)
 {
 	if (rectangle.x + rectangle.width / 2 >= ball.x - ball.radius &&
 		rectangle.x - rectangle.width / 2 <= ball.x + ball.radius &&
@@ -122,9 +148,9 @@ bool CheckRecCollision(Rectangle rectangle, Ball& ball)
 	}
 }
 
-void CollideWithPlayer(Player player, Ball& ball)
+void CollideWithPlayer()
 {
-	if (CheckRecCollision(player.paddle, ball))
+	if (CheckRecCollision(player.paddle))
 	{
 		const float maxAngleDegrees = 60.0f;
 		const float maxAngleRadians = maxAngleDegrees * (3.141592653589793f / 180.0f);
@@ -165,7 +191,7 @@ void CollideWithPlayer(Player player, Ball& ball)
 	}
 }
 
-void CollideWithBlock(Block block, Ball& ball)
+void CollideWithBlock(Block block)
 {
 	if (!ball.isColiding)
 	{
@@ -190,7 +216,7 @@ void CollideWithBlock(Block block, Ball& ball)
 	}
 }
 
-void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball)
+void CheckBlockDestruction(Block blocks[blockRows][blockCols])
 {
 	for (int i = 0; i < blockRows; i++)
 	{
@@ -198,11 +224,11 @@ void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball)
 		{
 			if (!blocks[i][j].isDestroyed)
 			{
-				if (CheckRecCollision(blocks[i][j].rectangle, ball))
+				if (CheckRecCollision(blocks[i][j].rectangle))
 				{
-					CollideWithBlock(blocks[i][j], ball);
+					CollideWithBlock(blocks[i][j]);
 					blocks[i][j].isDestroyed = true;
-					AccelerateBall(ball);
+					AccelerateBall();
 				}
 			}
 		}
@@ -211,10 +237,6 @@ void CheckBlockDestruction(Block blocks[blockRows][blockCols], Ball& ball)
 
 void MovePlayer()
 {
-	//Ball follows player
-	if (!ball.hasBeenLaunched)
-		ball.x = player.paddle.x;
-
 	if (slGetKey(SL_KEY_LEFT))
 	{
 		if (player.paddle.x - player.paddle.width / 2 <= 0)
@@ -240,9 +262,9 @@ void LaunchBall()
 		ball.hasBeenLaunched = true;
 }
 
-void AccelerateBall(Ball& ball)
+void AccelerateBall()
 {
-	float accelerationRate = 1.03;
+	float accelerationRate = 1.05;
 	ball.baseSpeed *= accelerationRate;
 	ball.speedY *= accelerationRate;
 	ball.speedX *= accelerationRate	;

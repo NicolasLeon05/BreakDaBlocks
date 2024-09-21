@@ -153,7 +153,7 @@ void CollideWithPlayer()
 	if (CheckRecCollision(player.paddle))
 	{
 		const float maxAngleDegrees = 60.0f;
-		const float maxAngleRadians = maxAngleDegrees * (3.141592653589793f / 180.0f);
+		const float maxAngleRadians = maxAngleDegrees * (PI / 180.0f);
 
 		//Relative position of the ball on the paddle
 		float relativeX = (ball.x - player.paddle.x) / (player.paddle.width / 2);

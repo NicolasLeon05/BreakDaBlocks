@@ -7,6 +7,11 @@
 #define WHITE slSetForeColor(255, 255, 255, 1);
 #define BLACK slSetForeColor(0, 0, 0, 1);
 
+#ifndef PI
+#define PI 3.14159265358979323846f
+#endif
+
+
 //Screen size
 const int screenWidth = 1280;
 const int screenHeight = 720;

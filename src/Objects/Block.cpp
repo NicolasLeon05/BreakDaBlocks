@@ -34,8 +34,7 @@ void DrawBlocks()
 					slRectangleFill(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
 				BLACK
 					slRectangleOutline(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
-			}
-			
+			}		
 		}
 	}
 }

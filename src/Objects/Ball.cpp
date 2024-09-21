@@ -2,36 +2,41 @@
 #include "Player.h"
 #include <iostream>
 
-Ball ball;
+using namespace Player;
 
-float GenerateRandomAngle();
-
-void InitBall()
+namespace Ball
 {
-	float randomAngle = GenerateRandomAngle();
+	Ball ball;
 
-	ball.x = player.paddle.x;
-	ball.y = player.paddle.y + player.paddle.height / 2 + ball.radius + 5;
-	ball.baseSpeed = 400.0f;
-	ball.speedX = ball.baseSpeed * cos(randomAngle);
-	ball.speedY = ball.baseSpeed * sin(randomAngle);
-	ball.isColiding = false;
-	ball.hasBeenLaunched = false;
-}
+	float GenerateRandomAngle();
 
-float GenerateRandomAngle()
-{
-	int randomAngle;
-	bool angleFound;
-
-	do
+	void Init()
 	{
-		angleFound = true;
+		float randomAngle = GenerateRandomAngle();
 
-		randomAngle = rand() % 131 + 25;
-	} while (!angleFound);
+		ball.x = player.paddle.x;
+		ball.y = player.paddle.y + player.paddle.height / 2 + ball.radius + 5;
+		ball.baseSpeed = 400.0f;
+		ball.speedX = ball.baseSpeed * cos(randomAngle);
+		ball.speedY = ball.baseSpeed * sin(randomAngle);
+		ball.isColiding = false;
+		ball.hasBeenLaunched = false;
+	}
 
-	float angleRadians = randomAngle * (PI / 180.0f);
+	float GenerateRandomAngle()
+	{
+		int randomAngle;
+		bool angleFound;
 
-	return angleRadians;
+		do
+		{
+			angleFound = true;
+
+			randomAngle = rand() % 131 + 25;
+		} while (!angleFound);
+
+		float angleRadians = randomAngle * (PI / 180.0f);
+
+		return angleRadians;
+	}
 }

@@ -2,13 +2,16 @@
 #include "Rectangle.h"
 #include "Constants.h"
 
-struct Player
+namespace Player
 {
-	Rectangle paddle;
-	float speed;
-	int lives;
-};
+	struct Player
+	{
+		Rectangle paddle;
+		float speed;
+		int lives;
+	};
 
-extern Player player;
+	extern Player player;
 
-void InitPlayer();
+	void Init();
+}

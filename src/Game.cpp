@@ -3,46 +3,52 @@
 #include "Constants.h"
 #include "Scene_Gameplay.h"
 
-static void Init();
-
-static void Update();
-
-static void Draw();
-
-static void DeInit(); //Completar
-
-
-void Run()
+namespace Game
 {
-	Init();
-	
-	while (!slShouldClose() && !slGetKey(SL_KEY_ESCAPE))
+	static void Init();
+
+	static void Update();
+
+	static void Draw();
+
+	static void DeInit(); //Completar
+
+
+	void Run()
 	{
-		Update();
-		Draw();
+		Init();
+
+		while (!slShouldClose() && !slGetKey(SL_KEY_ESCAPE))
+		{
+			Update();
+			Draw();
+		}
+
+		DeInit();
 	}
 
-	slClose();
+	void Init()
+	{
+		// set up our window and a few resources we need
+		slWindow(screenWidth, screenHeight, "Simple SIGIL Example", false);
+		slSetTextAlign(SL_ALIGN_CENTER);
+
+		Gameplay::Init();
+	}
+
+	void Update()
+	{
+		Gameplay::Update();
+	}
+
+	void Draw()
+	{
+		Gameplay::Draw();
+		slRender();
+	}
+
+	void DeInit()
+	{
+		slClose();
+	}
 }
-
-void Init()
-{
-	// set up our window and a few resources we need
-	slWindow(screenWidth, screenHeight, "Simple SIGIL Example", false);
-	slSetTextAlign(SL_ALIGN_CENTER);
-
-	InitGameplay();
-}
-
-void Update()
-{
-	UpdateGameplay();
-}
-
-void Draw()
-{
-	DrawGameplay();
-	slRender();
-}
-
-

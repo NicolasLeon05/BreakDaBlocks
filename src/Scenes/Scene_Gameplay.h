@@ -1,8 +1,11 @@
 #pragma once
 
-void InitGameplay();
+namespace Gameplay
+{
+void Init();
 
-void UpdateGameplay();
+void Update();
 
-void DrawGameplay();
+void Draw();
+}
 

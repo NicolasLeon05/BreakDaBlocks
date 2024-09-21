@@ -1,40 +1,42 @@
 #include "Block.h"
 #include "sl.h"
 
-
-Block blocks[blockRows][blockCols];
-
-void InitBlocks()
+namespace Blocks
 {
-	float startPosX = blockWidth / 2;
-	float startPosY = limitUp - blockHeight * 2;
+	Block blocks[blockRows][blockCols];
 
-	for (int i = 0; i < blockRows; i++)
+	void Init()
 	{
-		for (int j = 0; j < blockCols; j++)
+		float startPosX = blockWidth / 2;
+		float startPosY = limitUp - blockHeight * 2;
+
+		for (int i = 0; i < blockRows; i++)
 		{
-			blocks[i][j].rectangle.height = blockHeight;
-			blocks[i][j].rectangle.width = blockWidth;
-			blocks[i][j].rectangle.x = startPosX + (blockWidth * j);
-			blocks[i][j].rectangle.y = startPosY - (blockHeight * i);
-			blocks[i][j].isDestroyed = false;
+			for (int j = 0; j < blockCols; j++)
+			{
+				blocks[i][j].rectangle.height = blockHeight;
+				blocks[i][j].rectangle.width = blockWidth;
+				blocks[i][j].rectangle.x = startPosX + (blockWidth * j);
+				blocks[i][j].rectangle.y = startPosY - (blockHeight * i);
+				blocks[i][j].isDestroyed = false;
+			}
 		}
 	}
-}
 
-void DrawBlocks()
-{
-	for (int i = 0; i < blockRows; i++)
+	void Draw()
 	{
-		for (int j = 0; j < blockCols; j++)
+		for (int i = 0; i < blockRows; i++)
 		{
-			if (!blocks[i][j].isDestroyed)
+			for (int j = 0; j < blockCols; j++)
 			{
-				GREEN
-					slRectangleFill(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
-				BLACK
-					slRectangleOutline(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
-			}		
+				if (!blocks[i][j].isDestroyed)
+				{
+					GREEN
+						slRectangleFill(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
+					BLACK
+						slRectangleOutline(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
+				}
+			}
 		}
 	}
 }

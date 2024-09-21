@@ -6,272 +6,251 @@
 #include "Block.h"
 #include <cmath>
 
-
-static const char KEY_SPACE = 32;
-static float deathTimer = 0.0f;
-static bool lifeLost = false;
-
-void CheckWallCollision();
-bool CheckRecCollision(Rectangle rectangle);
-void CollideWithPlayer();
-void CollideWithBlock(Block block);
-void CheckBlockDestruction(Block blocks[blockRows][blockCols]);
-
-void MoveBall();
-
-void LoseLife();
-
-void MovePlayer();
-
-void LaunchBall();
-
-void AccelerateBall();
-
-float Clamp(float value, float min, float max);
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-void InitGameplay() //Cambiar a Init solo y usar namespace
+namespace Gameplay
 {
-	InitPlayer();
-	InitBall();
-	InitBlocks();
-}
+	static const char KEY_SPACE = 32;
+	static float deathTimer = 0.0f;
+	static bool lifeLost = false;
 
-void UpdateGameplay()
-{
-	if (!lifeLost)
+
+	void CheckWallCollision();
+	bool CheckRecCollision(Rectangle rectangle);
+	void CollideWithPlayer();
+	void CollideWithBlock(Blocks::Block block);
+	void CheckBlockDestruction(Blocks::Block blocks[blockRows][blockCols]);
+
+	void MoveBall();
+
+	void LoseLife();
+
+	void MovePlayer();
+
+	void LaunchBall();
+
+	void AccelerateBall();
+
+	float Clamp(float value, float min, float max);
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	void Init() //Cambiar a Init solo y usar namespace
 	{
-		MoveBall();
-		CheckWallCollision();
-		CollideWithPlayer();
-		CheckBlockDestruction(blocks);
+		Player::Init();
+		Ball::Init();
+		Blocks::Init();
 	}
-	else
+
+	void Update()
 	{
-		deathTimer += slGetDeltaTime();
-		if (deathTimer > 1)
+		if (!lifeLost)
 		{
-			deathTimer = 0.0f;
-			lifeLost = false;
-			InitBall();
-		}
-	}
-
-	MovePlayer();
-}
-
-void DrawGameplay()
-{
-	
-	if (!lifeLost)
-	{
-		//Draw Ball
-		RED
-			slCircleFill(ball.x, ball.y, ball.radius, 100);
-	}
-	
-
-	//Draw player
-	BLUE
-		slRectangleFill(player.paddle.x, player.paddle.y, player.paddle.width, player.paddle.height);
-
-	//Draw blocks
-	DrawBlocks();
-}
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-
-void MoveBall()
-{
-	//Ball follows player
-	if (!ball.hasBeenLaunched)
-	{
-		ball.x = player.paddle.x;
-	}
-	else
-	{
-		ball.x += ball.speedX * slGetDeltaTime();
-		ball.y += ball.speedY * slGetDeltaTime();
-	}
-}
-
-void CheckWallCollision()
-{
-	//Lateral collision
-	if (ball.x >= limitRight || ball.x <= limitLeft)
-	{
-		ball.speedX *= -1;
-		if (ball.x >= limitRight)
-			ball.x = limitRight - ball.radius;
-
-		if (ball.x <= limitLeft)
-			ball.x = limitLeft + ball.radius;
-	}
-
-	//Top/bottom collision
-	if (ball.y >= limitUp || ball.y <= limitDown)
-	{
-		ball.speedY *= -1;
-		if (ball.y >= limitUp)
-		{
-			ball.y = limitUp - ball.radius;
-		}
-
-		if (ball.y <= limitDown)
-		{
-			ball.y = limitDown + ball.radius;
-			LoseLife();
-		}
-
-	}
-}
-
-void LoseLife()
-{
-	player.lives--;
-	lifeLost = true;
-}
-
-bool CheckRecCollision(Rectangle rectangle)
-{
-	if (rectangle.x + rectangle.width / 2 >= ball.x - ball.radius &&
-		rectangle.x - rectangle.width / 2 <= ball.x + ball.radius &&
-		rectangle.y + rectangle.height / 2 >= ball.y - ball.radius &&
-		rectangle.y - rectangle.height / 2 <= ball.y + ball.radius)
-	{
-		return true;
-	}
-	else
-	{
-		ball.isColiding = false;
-		return false;
-	}
-}
-
-void CollideWithPlayer()
-{
-	if (CheckRecCollision(player.paddle))
-	{
-		const float maxAngleDegrees = 60.0f;
-		const float maxAngleRadians = maxAngleDegrees * (PI / 180.0f);
-
-		//Relative position of the ball on the paddle
-		float relativeX = (ball.x - player.paddle.x) / (player.paddle.width / 2);
-
-		//Limits that value between -1 and 1
-		relativeX = Clamp(relativeX, -1.0f, 1.0f);
-		float bounceAngle = relativeX * maxAngleRadians;
-
-		ball.speedX = ball.baseSpeed * sin(bounceAngle);
-		ball.speedY = ball.baseSpeed * cos(bounceAngle);
-
-		//Old collison
-		/*if (!ball.isColiding)
-		{
-			ball.isColiding = true;
-			ball.speedY *= -1;
-
-			//collision on the sides
-			if (ball.x < player.paddle.x - player.paddle.width / 2 || ball.x > player.paddle.x + player.paddle.width / 2)
-			{
-				ball.speedX *= -1;
-				//Corrects ball position x
-				if (ball.x < player.paddle.x - player.paddle.width / 2)
-					ball.x = player.paddle.x - player.paddle.width / 2 - ball.radius - 1;
-				else
-					ball.x = player.paddle.x + player.paddle.width / 2 + ball.radius + 1;
-			}
-			else if(player.paddle.y + player.paddle.height / 2 >= ball.y - ball.radius)
-			{
-				//Corrects ball position y
-				ball.y = player.paddle.y + player.paddle.height / 2 + ball.radius + 1;
-			}
-		}
-		*/
-	}
-}
-
-void CollideWithBlock(Block block)
-{
-	if (!ball.isColiding)
-	{
-		ball.isColiding = true;
-		ball.speedY *= -1;
-
-		//collision on the sides
-		if (ball.x < block.rectangle.x - block.rectangle.width / 2 || ball.x > block.rectangle.x + block.rectangle.width / 2)
-		{
-			ball.speedX *= -1;
-			ball.speedY *= -1;
-			//Corrects ball position x
-			if (ball.x < block.rectangle.x - block.rectangle.width / 2)
-				ball.x = block.rectangle.x - block.rectangle.width / 2 - ball.radius - 1;
-			else
-				ball.x = block.rectangle.x + block.rectangle.width / 2 + ball.radius + 1;
+			MoveBall();
+			CheckWallCollision();
+			CollideWithPlayer();
+			CheckBlockDestruction(Blocks::blocks);
 		}
 		else
 		{
-			//Corrects ball position y
+			deathTimer += slGetDeltaTime();
+			if (deathTimer > 1)
+			{
+				deathTimer = 0.0f;
+				lifeLost = false;
+				Ball::Init();
+			}
+		}
+
+		MovePlayer();
+	}
+
+	void Draw()
+	{
+
+		if (!lifeLost)
+		{
+			//Draw Ball
+			RED
+				slCircleFill(Ball::ball.x, Ball::ball.y, Ball::ball.radius, 100);
+		}
+
+
+		//Draw player
+		BLUE
+			slRectangleFill(Player::player.paddle.x, Player::player.paddle.y, Player::player.paddle.width, Player::player.paddle.height);
+
+		//Draw blocks
+		Blocks::Draw();
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	void MoveBall()
+	{
+		//Ball follows player
+		if (!Ball::ball.hasBeenLaunched)
+		{
+			Ball::ball.x = Player::player.paddle.x;
+		}
+		else
+		{
+			Ball::ball.x += Ball::ball.speedX * slGetDeltaTime();
+			Ball::ball.y += Ball::ball.speedY * slGetDeltaTime();
 		}
 	}
-}
 
-void CheckBlockDestruction(Block blocks[blockRows][blockCols])
-{
-	for (int i = 0; i < blockRows; i++)
+	void CheckWallCollision()
 	{
-		for (int j = 0; j < blockCols; j++)
+		//Lateral collision
+		if (Ball::ball.x >= limitRight || Ball::ball.x <= limitLeft)
 		{
-			if (!blocks[i][j].isDestroyed)
+			Ball::ball.speedX *= -1;
+			if (Ball::ball.x >= limitRight)
+				Ball::ball.x = limitRight - Ball::ball.radius;
+
+			if (Ball::ball.x <= limitLeft)
+				Ball::ball.x = limitLeft + Ball::ball.radius;
+		}
+
+		//Top/bottom collision
+		if (Ball::ball.y >= limitUp || Ball::ball.y <= limitDown)
+		{
+			Ball::ball.speedY *= -1;
+			if (Ball::ball.y >= limitUp)
 			{
-				if (CheckRecCollision(blocks[i][j].rectangle))
+				Ball::ball.y = limitUp - Ball::ball.radius;
+			}
+
+			if (Ball::ball.y <= limitDown)
+			{
+				Ball::ball.y = limitDown + Ball::ball.radius;
+				LoseLife();
+			}
+
+		}
+	}
+
+	void LoseLife()
+	{
+		Player::player.lives--;
+		lifeLost = true;
+	}
+
+	bool CheckRecCollision(Rectangle rectangle)
+	{
+		if (rectangle.x + rectangle.width / 2 >= Ball::ball.x - Ball::ball.radius &&
+			rectangle.x - rectangle.width / 2 <= Ball::ball.x + Ball::ball.radius &&
+			rectangle.y + rectangle.height / 2 >= Ball::ball.y - Ball::ball.radius &&
+			rectangle.y - rectangle.height / 2 <= Ball::ball.y + Ball::ball.radius)
+		{
+			return true;
+		}
+		else
+		{
+			Ball::ball.isColiding = false;
+			return false;
+		}
+	}
+
+	void CollideWithPlayer()
+	{
+		if (CheckRecCollision(Player::player.paddle))
+		{
+			const float maxAngleDegrees = 60.0f;
+			const float maxAngleRadians = maxAngleDegrees * (PI / 180.0f);
+
+			//Relative position of the ball on the paddle
+			float relativeX = (Ball::ball.x - Player::player.paddle.x) / (Player::player.paddle.width / 2);
+
+			//Limits that value between -1 and 1
+			relativeX = Clamp(relativeX, -1.0f, 1.0f);
+			float bounceAngle = relativeX * maxAngleRadians;
+
+			Ball::ball.speedX = Ball::ball.baseSpeed * sin(bounceAngle);
+			Ball::ball.speedY = Ball::ball.baseSpeed * cos(bounceAngle);
+		}
+	}
+
+	void CollideWithBlock(Blocks::Block block)
+	{
+		if (!Ball::ball.isColiding)
+		{
+			Ball::ball.isColiding = true;
+			
+
+			//collision on the sides
+			if (Ball::ball.x < block.rectangle.x - block.rectangle.width / 2 || Ball::ball.x > block.rectangle.x + block.rectangle.width / 2)
+			{
+				Ball::ball.speedX *= -1;
+
+				//Corrects ball position x
+				if (Ball::ball.x < block.rectangle.x - block.rectangle.width / 2)
+					Ball::ball.x = block.rectangle.x - block.rectangle.width / 2 - Ball::ball.radius - 1;
+				else
+					Ball::ball.x = block.rectangle.x + block.rectangle.width / 2 + Ball::ball.radius + 1;
+			}
+			else //Collision on the top/bottom
+			{
+				Ball::ball.speedY *= -1;
+			}
+		}
+	}
+
+	void CheckBlockDestruction(Blocks::Block blocks[blockRows][blockCols])
+	{
+		for (int i = 0; i < blockRows; i++)
+		{
+			for (int j = 0; j < blockCols; j++)
+			{
+				if (!blocks[i][j].isDestroyed)
 				{
-					CollideWithBlock(blocks[i][j]);
-					blocks[i][j].isDestroyed = true;
-					AccelerateBall();
+					if (CheckRecCollision(blocks[i][j].rectangle))
+					{
+						CollideWithBlock(blocks[i][j]);
+						blocks[i][j].isDestroyed = true;
+						AccelerateBall();
+					}
 				}
 			}
 		}
 	}
-}
 
-void MovePlayer()
-{
-	if (slGetKey(SL_KEY_LEFT))
+	void MovePlayer()
 	{
-		if (player.paddle.x - player.paddle.width / 2 <= 0)
-			player.paddle.x = player.paddle.width / 2;
-		else
-			player.paddle.x -= player.speed * slGetDeltaTime();
+		if (slGetKey(SL_KEY_LEFT))
+		{
+			if (Player::player.paddle.x - Player::player.paddle.width / 2 <= 0)
+				Player::player.paddle.x = Player::player.paddle.width / 2;
+			else
+				Player::player.paddle.x -= Player::player.speed * slGetDeltaTime();
+		}
+		else if (slGetKey(SL_KEY_RIGHT))
+		{
+			if (Player::player.paddle.x + Player::player.paddle.width / 2 >= screenWidth)
+				Player::player.paddle.x = screenWidth - Player::player.paddle.width / 2;
+			else
+				Player::player.paddle.x += Player::player.speed * slGetDeltaTime();
+		}
+
+		if (slGetKey(KEY_SPACE))
+			LaunchBall();
 	}
-	else if (slGetKey(SL_KEY_RIGHT))
+
+	void LaunchBall()
 	{
-		if (player.paddle.x + player.paddle.width / 2 >= screenWidth)
-			player.paddle.x = screenWidth - player.paddle.width / 2;
-		else
-			player.paddle.x += player.speed * slGetDeltaTime();
+		if (!Ball::ball.hasBeenLaunched)
+			Ball::ball.hasBeenLaunched = true;
 	}
 
-	if (slGetKey(KEY_SPACE))
-		LaunchBall();
-}
+	void AccelerateBall()
+	{
+		float accelerationRate = 1.05;
+		Ball::ball.baseSpeed *= accelerationRate;
+		Ball::ball.speedY *= accelerationRate;
+		Ball::ball.speedX *= accelerationRate;
+	}
 
-void LaunchBall()
-{
-	if (!ball.hasBeenLaunched)
-		ball.hasBeenLaunched = true;
-}
-
-void AccelerateBall()
-{
-	float accelerationRate = 1.05;
-	ball.baseSpeed *= accelerationRate;
-	ball.speedY *= accelerationRate;
-	ball.speedX *= accelerationRate	;
-}
-
-float Clamp(float value, float min, float max) {
-	if (value < min) return min;
-	if (value > max) return max;
-	return value;
+	float Clamp(float value, float min, float max) {
+		if (value < min) return min;
+		if (value > max) return max;
+		return value;
+	}
 }

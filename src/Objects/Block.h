@@ -2,15 +2,19 @@
 #include "Rectangle.h"
 #include "Constants.h"
 
-struct Block
+namespace Blocks
 {
-	Rectangle rectangle;
-	bool isDestroyed;
-};
+	struct Block
+	{
+		Rectangle rectangle;
+		bool isDestroyed;
+	};
 
-extern Block blocks[blockRows][blockCols];
+	extern Block blocks[blockRows][blockCols];
 
-void InitBlocks();
+	void Init();
 
-void DrawBlocks();
+	void Draw();
+
+}
 

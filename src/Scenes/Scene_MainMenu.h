@@ -1,13 +1,15 @@
 #pragma once
 #include "Button.h"
 
+namespace Bton = Button;
+
 namespace MainMenu
 {
 	void Init();
 	void Draw();
 
-	extern Button::Button play;
-	extern Button::Button tutorial;
-	extern Button::Button exit;
+	extern Bton::Button play;
+	extern Bton::Button tutorial;
+	extern Bton::Button exit;
 }
 

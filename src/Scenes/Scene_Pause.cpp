@@ -4,12 +4,12 @@
 namespace Pause
 {
     Button::Button resume;
-    Button::Button menu;
+    Button::Button goMenu;
 
     void Init()
     {
         resume = Button::Create("Resume", screenWidth / 5 * 2 - resume.rectangle.width, screenHeight / 2, 250, 60);
-        menu = Button::Create("Menu", screenWidth / 5 * 4 - menu.rectangle.width, screenHeight / 2, 250, 60);
+        goMenu = Button::Create("Menu", screenWidth / 5 * 4 - goMenu.rectangle.width, screenHeight / 2, 250, 60);
     }
 
 
@@ -21,10 +21,10 @@ namespace Pause
             slSetForeColor(255, 0, 0, 0.65f);
         Button::Draw(resume);
 
-        if (menu.isSelected)
+        if (goMenu.isSelected)
             RED
         else
             slSetForeColor(255, 0, 0, 0.65f);
-        Button::Draw(menu);
+        Button::Draw(goMenu);
     }
 }

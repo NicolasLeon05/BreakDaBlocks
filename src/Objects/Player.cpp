@@ -14,7 +14,7 @@ namespace Player
 		player.paddle.width = screenWidth / 6;
 		player.paddle.height = screenHeight / 32;
 		player.speed = 750.0f;
-		player.lives = 1;
+		player.lives = 3;
 	}
 	void Draw()
 	{

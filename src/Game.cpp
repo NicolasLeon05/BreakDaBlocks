@@ -4,11 +4,13 @@
 #include "Scene_Gameplay.h"
 #include "Scene_MainMenu.h"
 #include "Scene_Pause.h"
+#include "Scene_Result.h"
 #include "Button.h"
 
 using namespace Button;
 using namespace MainMenu;
 using namespace Pause;
+using namespace Result;
 
 namespace Game
 {
@@ -59,13 +61,26 @@ namespace Game
 		MainMenu::Init();
 		Gameplay::Init();
 		Pause::Init();
+		Result::Init();
 	}
 
 	void Update()
 	{
-		if (gameStarted)
+		if (gameEnded) //Result Scene
 		{
-			if (!gamePaused) //Run gameplay
+			if (IsButtonPressed(playAgain))
+			{
+				ResetGameplay();
+				gameStarted = true;
+			}
+			else if (IsButtonPressed(Result::goMenu))
+			{
+				ResetGameplay();
+			}
+		}
+		else if (gameStarted) //Run gameplay
+		{
+			if (!gamePaused) //Gameplay Scene
 			{
 				if (!waitingToResume)
 				{
@@ -84,16 +99,15 @@ namespace Game
 				if (slGetKey(SL_KEY_ESCAPE)) //Pauses game
 					gamePaused = true;
 			}
-			else //Show pause menu
+			else //Pause Scene
 			{
 				if (IsButtonPressed(resume) || slGetKey(SL_KEY_ESCAPE)) //Resume gampeplay
 				{
 					waitingToResume = true;
 					gamePaused = false;
 				}
-				else if (IsButtonPressed(menu)) //Go back to menu
+				else if (IsButtonPressed(Pause::goMenu)) //Go back to menu
 				{
-					gameEnded = true;
 					gameStarted = false;
 					ResetGameplay();
 				}
@@ -107,21 +121,19 @@ namespace Game
 
 	void Draw()
 	{
-		if (gameEnded)
-		{
-			//Win/Lose scene
-			WHITE
-				slText(screenWidth / 2, screenHeight / 2, "button.text");
+		if (gameEnded)//Result scene
+		{		
+			Result::Draw(Player::player);
 		}
-		else if (!gameStarted)
+		else if (!gameStarted) //Main Menu scene
 		{
 			MainMenu::Draw();
 		}
 		else
 		{
-			if (gamePaused)
-				Draw();
-			else
+			if (gamePaused) //Pause scene 
+				Pause::Draw();
+			else			//Gameplay scene
 				Gameplay::Draw();
 		}
 
@@ -140,6 +152,7 @@ namespace Game
 		gameStarted = false;
 		gamePaused = false;
 		waitingToResume = false;
+		gameEnded = false;
 
 		resumeTimer = 0.0f;
 	}

@@ -5,7 +5,6 @@
 #include "Constants.h"
 #include "Block.h"
 #include <cmath>
-#include <iostream>
 
 namespace P = Player;
 namespace B = Ball;
@@ -25,10 +24,6 @@ namespace Gameplay
 	static int blocksDestroyed;
 
 	static float deathTimer;
-	//static Ball ball = ball;
-	//static Player player = player;
-	//static Blocks::Block blocks[blockRows][blockCols] = Blocks::blocks;
-
 
 	void CheckWallCollision();
 	bool CheckRecCollision(Rec rectangle);
@@ -59,8 +54,7 @@ namespace Gameplay
 	}
 
 	bool Update()
-	{
-		std::cout << "Lives: " << player.lives << " Blocks destroyed: " << blocksDestroyed << std::endl;		
+	{	
 		MovePlayer();
 
 		if (!lifeLost)

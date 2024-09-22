@@ -2,7 +2,9 @@
 
 //Intentar reemplazar los define de colores por otra cosa, un enum class y una funcion que lo reciba por parametro
 //Hacer menues que funcionen con mouse y teclado
-//Modificar cantidad de vidas
+//Chequear consistencia del uso de namespace en las diferentes escenas
+//Posicionar bien botones de result y pause
+//Agregar creditos
 
 int main()
 {

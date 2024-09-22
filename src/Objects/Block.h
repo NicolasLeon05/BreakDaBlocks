@@ -6,7 +6,7 @@ namespace Blocks
 {
 	struct Block
 	{
-		Rectangle rectangle;
+		Rectangle::Rec rectangle;
 		bool isDestroyed;
 	};
 

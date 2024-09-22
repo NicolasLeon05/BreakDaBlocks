@@ -4,7 +4,7 @@ namespace Gameplay
 {
 void Init();
 
-void Update();
+bool Update();
 
 void Draw();
 }

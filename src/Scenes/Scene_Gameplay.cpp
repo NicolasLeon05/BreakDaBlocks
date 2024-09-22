@@ -5,22 +5,36 @@
 #include "Constants.h"
 #include "Block.h"
 #include <cmath>
+#include <iostream>
+
+namespace P = Player;
+namespace B = Ball;
+
+using namespace P;
+using namespace B;
+using namespace Blocks;
+using namespace Rectangle;
+
 
 namespace Gameplay
 {
 	static const char KEY_SPACE = 32;
-	static float deathTimer = 0.0f;
-	static bool lifeLost = false;
-	//static Ball::Ball ball = Ball::ball;
-	//static Player::Player player = Player::player;
+
+	static bool lifeLost;
+
+	static int blocksDestroyed;
+
+	static float deathTimer;
+	//static Ball ball = ball;
+	//static Player player = player;
 	//static Blocks::Block blocks[blockRows][blockCols] = Blocks::blocks;
 
 
 	void CheckWallCollision();
-	bool CheckRecCollision(Rectangle rectangle);
+	bool CheckRecCollision(Rec rectangle);
 	void CollideWithPlayer();
-	void CollideWithBlock(Blocks::Block block);
-	void CheckBlockDestruction(Blocks::Block blocks[blockRows][blockCols]);
+	void CollideWithBlock(Block block);
+	void CheckBlockDestruction(Block blocks[blockRows][blockCols]);
 
 	void MoveBall();
 	void LaunchBall();
@@ -33,15 +47,20 @@ namespace Gameplay
 	float Clamp(float value, float min, float max);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	void Init() //Cambiar a Init solo y usar namespace
+	void Init()
 	{
-		Player::Init();
-		Ball::Init();
 		Blocks::Init();
+		P::Init();
+		B::Init();
+
+		lifeLost = false;
+		blocksDestroyed = 0;
+		deathTimer = 0.0f;
 	}
 
-	void Update()
+	bool Update()
 	{
+		std::cout << "Lives: " << player.lives << " Blocks destroyed: " << blocksDestroyed << std::endl;		
 		MovePlayer();
 
 		if (!lifeLost)
@@ -58,15 +77,16 @@ namespace Gameplay
 			{
 				deathTimer = 0.0f;
 				lifeLost = false;
-				Ball::Init();
+				B::Init();
 			}
 		}
+		return player.lives <= 0 || blocksDestroyed >= totalBlocks;
 	}
 
 	void Draw()
 	{
-		Ball::Draw();
-		Player::Draw();
+		P::Draw();
+		B::Draw();
 		Blocks::Draw();
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,42 +95,42 @@ namespace Gameplay
 	void MoveBall()
 	{
 		//Ball follows player
-		if (!Ball::ball.hasBeenLaunched)
+		if (!ball.hasBeenLaunched)
 		{
-			Ball::ball.x = Player::player.paddle.x;
+			ball.x = player.paddle.x;
 		}
 		else
 		{
-			Ball::ball.x += Ball::ball.speedX * slGetDeltaTime();
-			Ball::ball.y += Ball::ball.speedY * slGetDeltaTime();
+			ball.x += ball.speedX * slGetDeltaTime();
+			ball.y += ball.speedY * slGetDeltaTime();
 		}
 	}
 
 	void CheckWallCollision()
 	{
 		//Lateral collision
-		if (Ball::ball.x >= limitRight || Ball::ball.x <= limitLeft)
+		if (ball.x >= limitRight || ball.x <= limitLeft)
 		{
-			Ball::ball.speedX *= -1;
-			if (Ball::ball.x >= limitRight)
-				Ball::ball.x = limitRight - 1;
+			ball.speedX *= -1;
+			if (ball.x >= limitRight)
+				ball.x = limitRight - 1;
 
-			if (Ball::ball.x <= limitLeft)
-				Ball::ball.x = limitLeft + 1;
+			if (ball.x <= limitLeft)
+				ball.x = limitLeft + 1;
 		}
 
 		//Top/bottom collision
-		if (Ball::ball.y >= limitUp || Ball::ball.y <= limitDown)
+		if (ball.y >= limitUp || ball.y <= limitDown)
 		{
-			Ball::ball.speedY *= -1;
-			if (Ball::ball.y >= limitUp)
+			ball.speedY *= -1;
+			if (ball.y >= limitUp)
 			{
-				Ball::ball.y = limitUp - 1;
+				ball.y = limitUp - 1;
 			}
 
-			if (Ball::ball.y <= limitDown)
+			if (ball.y <= limitDown)
 			{
-				Ball::ball.y = limitDown;
+				ball.y = limitDown;
 				LoseLife();
 			}
 		}
@@ -118,66 +138,66 @@ namespace Gameplay
 
 	void LoseLife()
 	{
-		Player::player.lives--;
+		player.lives--;
 		lifeLost = true;
 	}
 
-	bool CheckRecCollision(Rectangle rectangle)
+	bool CheckRecCollision(Rec rectangle)
 	{
-		if (rectangle.x + rectangle.width / 2 >= Ball::ball.x - Ball::ball.radius &&
-			rectangle.x - rectangle.width / 2 <= Ball::ball.x + Ball::ball.radius &&
-			rectangle.y + rectangle.height / 2 >= Ball::ball.y - Ball::ball.radius &&
-			rectangle.y - rectangle.height / 2 <= Ball::ball.y + Ball::ball.radius)
+		if (rectangle.x + rectangle.width / 2 >= ball.x - ball.radius &&
+			rectangle.x - rectangle.width / 2 <= ball.x + ball.radius &&
+			rectangle.y + rectangle.height / 2 >= ball.y - ball.radius &&
+			rectangle.y - rectangle.height / 2 <= ball.y + ball.radius)
 		{
 			return true;
 		}
 		else
 		{
-			Ball::ball.isColiding = false;
+			ball.isColiding = false;
 			return false;
 		}
 	}
 
 	void CollideWithPlayer()
 	{
-		if (CheckRecCollision(Player::player.paddle))
+		if (CheckRecCollision(player.paddle))
 		{
 			const float maxAngleDegrees = 60.0f;
 			const float maxAngleRadians = maxAngleDegrees * (PI / 180.0f);
 
 			//Relative position of the ball on the paddle
-			float relativeX = (Ball::ball.x - Player::player.paddle.x) / (Player::player.paddle.width / 2);
+			float relativeX = (ball.x - player.paddle.x) / (player.paddle.width / 2);
 
 			//Limits that value between -1 and 1
 			relativeX = Clamp(relativeX, -1.0f, 1.0f);
 			float bounceAngle = relativeX * maxAngleRadians;
 
-			Ball::ball.speedX = Ball::ball.baseSpeed * sin(bounceAngle);
-			Ball::ball.speedY = Ball::ball.baseSpeed * cos(bounceAngle);
+			ball.speedX = ball.baseSpeed * sin(bounceAngle);
+			ball.speedY = ball.baseSpeed * cos(bounceAngle);
 		}
 	}
 
 	void CollideWithBlock(Blocks::Block block)
 	{
-		if (!Ball::ball.isColiding)
+		if (!ball.isColiding)
 		{
-			Ball::ball.isColiding = true;
+			ball.isColiding = true;
 
 
 			//collision on the sides
-			if (Ball::ball.x < block.rectangle.x - block.rectangle.width / 2 || Ball::ball.x > block.rectangle.x + block.rectangle.width / 2)
+			if (ball.x < block.rectangle.x - block.rectangle.width / 2 || ball.x > block.rectangle.x + block.rectangle.width / 2)
 			{
-				Ball::ball.speedX *= -1;
+				ball.speedX *= -1;
 
 				//Corrects ball position x
-				if (Ball::ball.x < block.rectangle.x - block.rectangle.width / 2)
-					Ball::ball.x = block.rectangle.x - block.rectangle.width / 2 - Ball::ball.radius - 1;
+				if (ball.x < block.rectangle.x - block.rectangle.width / 2)
+					ball.x = block.rectangle.x - block.rectangle.width / 2 - ball.radius - 1;
 				else
-					Ball::ball.x = block.rectangle.x + block.rectangle.width / 2 + Ball::ball.radius + 1;
+					ball.x = block.rectangle.x + block.rectangle.width / 2 + ball.radius + 1;
 			}
 			else //Collision on the top/bottom
 			{
-				Ball::ball.speedY *= -1;
+				ball.speedY *= -1;
 			}
 		}
 	}
@@ -194,6 +214,7 @@ namespace Gameplay
 					{
 						CollideWithBlock(blocks[i][j]);
 						blocks[i][j].isDestroyed = true;
+						blocksDestroyed++;
 						AccelerateBall();
 					}
 				}
@@ -205,17 +226,17 @@ namespace Gameplay
 	{
 		if (slGetKey(SL_KEY_LEFT))
 		{
-			if (Player::player.paddle.x - Player::player.paddle.width / 2 <= 0)
-				Player::player.paddle.x = Player::player.paddle.width / 2;
+			if (player.paddle.x - player.paddle.width / 2 <= 0)
+				player.paddle.x = player.paddle.width / 2;
 			else
-				Player::player.paddle.x -= Player::player.speed * slGetDeltaTime();
+				player.paddle.x -= player.speed * slGetDeltaTime();
 		}
 		else if (slGetKey(SL_KEY_RIGHT))
 		{
-			if (Player::player.paddle.x + Player::player.paddle.width / 2 >= screenWidth)
-				Player::player.paddle.x = screenWidth - Player::player.paddle.width / 2;
+			if (player.paddle.x + player.paddle.width / 2 >= screenWidth)
+				player.paddle.x = screenWidth - player.paddle.width / 2;
 			else
-				Player::player.paddle.x += Player::player.speed * slGetDeltaTime();
+				player.paddle.x += player.speed * slGetDeltaTime();
 		}
 
 		if (slGetKey(KEY_SPACE))
@@ -224,16 +245,16 @@ namespace Gameplay
 
 	void LaunchBall()
 	{
-		if (!Ball::ball.hasBeenLaunched)
-			Ball::ball.hasBeenLaunched = true;
+		if (!ball.hasBeenLaunched)
+			ball.hasBeenLaunched = true;
 	}
 
 	void AccelerateBall()
 	{
 		float accelerationRate = 1.05;
-		Ball::ball.baseSpeed *= accelerationRate;
-		Ball::ball.speedY *= accelerationRate;
-		Ball::ball.speedX *= accelerationRate;
+		ball.baseSpeed *= accelerationRate;
+		ball.speedY *= accelerationRate;
+		ball.speedX *= accelerationRate;
 	}
 
 	float Clamp(float value, float min, float max) {

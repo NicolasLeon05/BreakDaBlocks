@@ -1,9 +1,13 @@
 #pragma once
 
-struct Rectangle
+namespace Rectangle
 {
-	float x;
-	float y;
-	float width;
-	float height;
-};
+	struct Rec
+	{
+		float x;
+		float y;
+		float width;
+		float height;
+	};
+}
+

@@ -6,7 +6,7 @@ namespace Button
 {
 	struct Button
 	{
-		Rectangle rectangle;
+		Rectangle::Rec rectangle;
 		const char* text;
 		bool isSelected;
 	};

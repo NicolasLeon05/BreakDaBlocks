@@ -1,5 +1,4 @@
 #pragma once
-#include <sl.h>
 #include "Button.h"
 
 namespace MainMenu

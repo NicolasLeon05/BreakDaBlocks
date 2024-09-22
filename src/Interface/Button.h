@@ -11,6 +11,8 @@ namespace Button
 		bool isSelected;
 	};
 
+	void Draw(Button button);
+
 	Button Create(const char* text, float recX, float recY, float recWidth, float recHeight);
 
 	bool IsButtonSelected(Button& button);

@@ -1,6 +1,7 @@
 #include "Ball.h"
 #include "Player.h"
 #include <iostream>
+#include "sl.h"
 
 using namespace Player;
 
@@ -21,6 +22,12 @@ namespace Ball
 		ball.speedY = ball.baseSpeed * sin(randomAngle);
 		ball.isColiding = false;
 		ball.hasBeenLaunched = false;
+	}
+
+	void Draw()
+	{
+		RED
+			slCircleFill(ball.x, ball.y, ball.radius, 100);
 	}
 
 	float GenerateRandomAngle()

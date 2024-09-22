@@ -14,4 +14,5 @@ namespace Player
 	extern Player player;
 
 	void Init();
+	void Draw();
 }

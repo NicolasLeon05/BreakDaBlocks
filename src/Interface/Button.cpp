@@ -3,6 +3,13 @@
 
 namespace Button
 {
+	void Draw(Button button)
+	{
+		slRectangleFill(button.rectangle.x, button.rectangle.y, button.rectangle.width, button.rectangle.height);
+		//WHITE
+		//slText(button.rectangle.x, button.rectangle.y, button.text);
+	}
+
 	Button Create(const char* text, float recX, float recY, float recWidth, float recHeight)
 	{
 		Button newButton;
@@ -36,9 +43,13 @@ namespace Button
 
 	bool IsButtonPressed(Button& button)
 	{
-		if (IsButtonSelected(button))
-			if (slGetMouseButton(SL_MOUSE_BUTTON_1) || slGetKey(SL_KEY_ENTER))
-				return true;
+		bool pressed = false;
+
+		if (slGetMouseButton(SL_MOUSE_BUTTON_1) || slGetKey(SL_KEY_ENTER))
+			pressed = true;
+
+		if (IsButtonSelected(button) && pressed)
+			return true;
 		else
 			return false;
 	}	

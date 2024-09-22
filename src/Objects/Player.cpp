@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Constants.h"
+#include "sl.h"
 
 
 namespace Player
@@ -15,5 +16,10 @@ namespace Player
 		player.paddle.height = screenHeight / 32;
 		player.speed = 750.0f;
 		player.lives = 5;
+	}
+	void Draw()
+	{
+		BLUE
+			slRectangleFill(player.paddle.x, player.paddle.y, player.paddle.width, player.paddle.height);
 	}
 }

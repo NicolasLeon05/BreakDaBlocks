@@ -1,5 +1,6 @@
 #include "Scene_MainMenu.h"
 #include "Constants.h"
+#include "sl.h"
 
 namespace MainMenu
 {
@@ -10,19 +11,30 @@ namespace MainMenu
 
 	void Init()
 	{
-
-		play = Button::Create("Play", screenWidth/2, screenHeight/2, 250, 60);
+		play = Button::Create("Play", screenWidth/2, screenHeight/5 * 3, 250, 60);
+		credits = Button::Create("Credits", screenWidth / 2, screenHeight / 5 * 2, 250, 60);
+		exit = Button::Create("Credits", screenWidth / 2, screenHeight / 5, 250, 60);
 	}
 
 	void Draw()
 	{
+		//Hacer funcion
 		if (play.isSelected)
 			RED
 		else
-			ORANGE
+			slSetForeColor(255, 0, 0, 0.65f);
+		Button::Draw(play);
 
-		slRectangleFill(play.rectangle.x, play.rectangle.y, play.rectangle.width, play.rectangle.height);
-		//WHITE
-		//slText(play.rectangle.x, play.rectangle.y, play.text);
+		if (credits.isSelected)
+			RED
+		else
+			slSetForeColor(255, 0, 0, 0.65f);
+		Button::Draw(credits);
+
+		if (exit.isSelected)
+			RED
+		else
+			slSetForeColor(255, 0, 0, 0.65f);
+		Button::Draw(exit);
 	}
 }

@@ -14,7 +14,7 @@ namespace Gameplay
 	//static Ball::Ball ball = Ball::ball;
 	//static Player::Player player = Player::player;
 	//static Blocks::Block blocks[blockRows][blockCols] = Blocks::blocks;
-	
+
 
 	void CheckWallCollision();
 	bool CheckRecCollision(Rectangle rectangle);
@@ -23,14 +23,12 @@ namespace Gameplay
 	void CheckBlockDestruction(Blocks::Block blocks[blockRows][blockCols]);
 
 	void MoveBall();
+	void LaunchBall();
+	void AccelerateBall();
 
 	void LoseLife();
 
 	void MovePlayer();
-
-	void LaunchBall();
-
-	void AccelerateBall();
 
 	float Clamp(float value, float min, float max);
 
@@ -44,6 +42,8 @@ namespace Gameplay
 
 	void Update()
 	{
+		MovePlayer();
+
 		if (!lifeLost)
 		{
 			MoveBall();
@@ -61,25 +61,12 @@ namespace Gameplay
 				Ball::Init();
 			}
 		}
-
-		MovePlayer();
 	}
 
 	void Draw()
 	{
-
-		if (!lifeLost)
-		{
-			//Draw Ball
-			RED
-				slCircleFill(Ball::ball.x, Ball::ball.y, Ball::ball.radius, 100);
-		}
-
-		//Draw player
-		BLUE
-			slRectangleFill(Player::player.paddle.x, Player::player.paddle.y, Player::player.paddle.width, Player::player.paddle.height);
-
-		//Draw blocks
+		Ball::Draw();
+		Player::Draw();
 		Blocks::Draw();
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,10 +93,10 @@ namespace Gameplay
 		{
 			Ball::ball.speedX *= -1;
 			if (Ball::ball.x >= limitRight)
-				Ball::ball.x = limitRight - Ball::ball.radius;
+				Ball::ball.x = limitRight - 1;
 
 			if (Ball::ball.x <= limitLeft)
-				Ball::ball.x = limitLeft + Ball::ball.radius;
+				Ball::ball.x = limitLeft + 1;
 		}
 
 		//Top/bottom collision
@@ -118,12 +105,12 @@ namespace Gameplay
 			Ball::ball.speedY *= -1;
 			if (Ball::ball.y >= limitUp)
 			{
-				Ball::ball.y = limitUp - Ball::ball.radius;
+				Ball::ball.y = limitUp - 1;
 			}
 
 			if (Ball::ball.y <= limitDown)
 			{
-				Ball::ball.y = limitDown + Ball::ball.radius;
+				Ball::ball.y = limitDown;
 				LoseLife();
 			}
 		}
@@ -175,7 +162,7 @@ namespace Gameplay
 		if (!Ball::ball.isColiding)
 		{
 			Ball::ball.isColiding = true;
-			
+
 
 			//collision on the sides
 			if (Ball::ball.x < block.rectangle.x - block.rectangle.width / 2 || Ball::ball.x > block.rectangle.x + block.rectangle.width / 2)

@@ -27,6 +27,7 @@
     <ClCompile Include="src\Objects\Player.cpp" />
     <ClCompile Include="src\Scenes\Scene_Gameplay.cpp" />
     <ClCompile Include="src\Scenes\Scene_MainMenu.cpp" />
+    <ClCompile Include="src\Scenes\Scene_Pause.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="src\Objects\Rectangle.h" />
     <ClInclude Include="src\Scenes\Scene_Gameplay.h" />
     <ClInclude Include="src\Scenes\Scene_MainMenu.h" />
+    <ClInclude Include="src\Scenes\Scene_Pause.h" />
     <ClInclude Include="src\Utils\Constants.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -115,10 +117,10 @@
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)lib\sigil\*.dll" "$(OutDir)" /Y
-xcopy "$(SolutionDir)res\Fonts\" "$(ProjectDir)" /Y</Command>
+xcopy "$(SolutionDir)res" "$(OutDir)res" /i /Y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Copiando dll's y font</Message>
+      <Message>Copiando dll's y recursos</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,10 +144,10 @@ xcopy "$(SolutionDir)res\Fonts\" "$(ProjectDir)" /Y</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)lib\sigil\*.dll" "$(OutDir)" /Y
-xcopy "$(SolutionDir)res\Fonts\" "$(ProjectDir)" /Y</Command>
+xcopy "$(SolutionDir)res" "$(OutDir)res" /i /Y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Copiando dll's y font</Message>
+      <Message>Copiando dll's y recursos</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

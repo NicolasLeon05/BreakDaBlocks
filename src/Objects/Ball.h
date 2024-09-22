@@ -19,4 +19,5 @@ namespace Ball
 	extern Ball ball;
 
 	void Init();
+	void Draw();
 }

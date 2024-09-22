@@ -114,10 +114,11 @@
       <AdditionalDependencies>sigil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)lib\sigil\*.dll" "$(OutDir)" /Y</Command>
+      <Command>copy "$(SolutionDir)lib\sigil\*.dll" "$(OutDir)" /Y
+xcopy "$(SolutionDir)res\Fonts\" "$(ProjectDir)" /Y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Copiando dll's</Message>
+      <Message>Copiando dll's y font</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,10 +141,11 @@
       <AdditionalDependencies>sigil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)lib\sigil\*.dll" "$(OutDir)" /Y</Command>
+      <Command>copy "$(SolutionDir)lib\sigil\*.dll" "$(OutDir)" /Y
+xcopy "$(SolutionDir)res\Fonts\" "$(ProjectDir)" /Y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Copiando dll's</Message>
+      <Message>Copiando dll's y font</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

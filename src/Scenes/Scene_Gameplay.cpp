@@ -11,7 +11,10 @@ namespace Gameplay
 	static const char KEY_SPACE = 32;
 	static float deathTimer = 0.0f;
 	static bool lifeLost = false;
-
+	//static Ball::Ball ball = Ball::ball;
+	//static Player::Player player = Player::player;
+	//static Blocks::Block blocks[blockRows][blockCols] = Blocks::blocks;
+	
 
 	void CheckWallCollision();
 	bool CheckRecCollision(Rectangle rectangle);
@@ -72,7 +75,6 @@ namespace Gameplay
 				slCircleFill(Ball::ball.x, Ball::ball.y, Ball::ball.radius, 100);
 		}
 
-
 		//Draw player
 		BLUE
 			slRectangleFill(Player::player.paddle.x, Player::player.paddle.y, Player::player.paddle.width, Player::player.paddle.height);
@@ -124,7 +126,6 @@ namespace Gameplay
 				Ball::ball.y = limitDown + Ball::ball.radius;
 				LoseLife();
 			}
-
 		}
 	}
 

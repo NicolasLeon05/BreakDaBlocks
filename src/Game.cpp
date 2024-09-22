@@ -2,6 +2,8 @@
 #include "sl.h"
 #include "Constants.h"
 #include "Scene_Gameplay.h"
+#include "Scene_MainMenu.h"
+#include "Button.h"
 
 namespace Game
 {
@@ -11,8 +13,10 @@ namespace Game
 
 	static void Draw();
 
-	static void DeInit(); //Completar
+	static void DeInit();
 
+	static int font;
+	static bool gameStarted = false;
 
 	void Run()
 	{
@@ -29,22 +33,40 @@ namespace Game
 
 	void Init()
 	{
-		// set up our window and a few resources we need
-		slWindow(screenWidth, screenHeight, "Simple SIGIL Example", false);
-		slSetTextAlign(SL_ALIGN_CENTER);
+		slWindow(screenWidth, screenHeight, "Breakout", false);
+		//int font = slLoadFont("Silkscreen-Regular.ttf");
+		//slSetFont(font, 100);
+		//slSetTextAlign(SL_ALIGN_CENTER);
 
+		MainMenu::Init();
 		Gameplay::Init();
 	}
 
 	void Update()
 	{
-		Gameplay::Update();
+		if (gameStarted)
+		{
+			Gameplay::Update();
+		}
+		else
+		{
+			if (Button::IsButtonPressed(MainMenu::play))
+			{
+				gameStarted = true;
+			}
+		}
 	}
 
 	void Draw()
 	{
-		slText(screenWidth / 2, screenHeight / 2, "hola");
-		Gameplay::Draw();
+		if (!gameStarted)
+		{
+			MainMenu::Draw();
+		}
+		else
+		{
+			Gameplay::Draw();
+		}
 		slRender();
 	}
 

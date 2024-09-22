@@ -1,17 +1,20 @@
 #pragma once
 #include <sl.h>
 #include "Rectangle.h"
-#include <iostream>
 
 namespace Button
 {
 	struct Button
 	{
 		Rectangle rectangle;
-		std::string text;
+		const char* text;
 		bool isSelected;
 	};
 
-	Button Create(std::string text, float recX, float recY, float recWidth, float recHeight);
+	Button Create(const char* text, float recX, float recY, float recWidth, float recHeight);
+
+	void IsButtonSelected(Button& button);
+
+	bool IsButtonPressed(Button button);
 }
 

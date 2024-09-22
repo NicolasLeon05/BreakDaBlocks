@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Constants.h"
 #include <iostream>
 
 namespace Button
@@ -6,8 +7,8 @@ namespace Button
 	void Draw(Button button)
 	{
 		slRectangleFill(button.rectangle.x, button.rectangle.y, button.rectangle.width, button.rectangle.height);
-		//WHITE
-		//slText(button.rectangle.x, button.rectangle.y, button.text);
+		WHITE
+			slText(button.rectangle.x - 5, button.rectangle.y - (button.rectangle.height / 3) + 5, button.text);
 	}
 
 	Button Create(const char* text, float recX, float recY, float recWidth, float recHeight)

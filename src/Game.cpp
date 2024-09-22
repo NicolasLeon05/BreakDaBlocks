@@ -18,7 +18,7 @@ namespace Game
 
 	static void ResetGameplay();
 
-	static int font;
+	int font;
 
 	static bool gameStarted;
 	static bool gamePaused;
@@ -42,9 +42,9 @@ namespace Game
 	void Init()
 	{
 		slWindow(screenWidth, screenHeight, "Breakout", false);
-		//int font = slLoadFont("res/Fonts/Silkscreen-Regular.ttf");
-		//slSetFont(font, 100);
-		//slSetTextAlign(SL_ALIGN_CENTER);
+		font = slLoadFont("res/Fonts/Silkscreen-Regular.ttf");
+		slSetFont(font, 50);
+		slSetTextAlign(SL_ALIGN_CENTER);
 
 		gameStarted = false;
 		gamePaused = false;

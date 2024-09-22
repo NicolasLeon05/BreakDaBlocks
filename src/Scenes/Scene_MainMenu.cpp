@@ -13,7 +13,7 @@ namespace MainMenu
 	{
 		play = Button::Create("Play", screenWidth/2, screenHeight/5 * 3, 250, 60);
 		credits = Button::Create("Credits", screenWidth / 2, screenHeight / 5 * 2, 250, 60);
-		exit = Button::Create("Credits", screenWidth / 2, screenHeight / 5, 250, 60);
+		exit = Button::Create("Exit", screenWidth / 2, screenHeight / 5, 250, 60);
 	}
 
 	void Draw()

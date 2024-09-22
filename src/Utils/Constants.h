@@ -1,7 +1,7 @@
 #pragma once
 
 //Cambiar
-#define ORANGE slSetForeColor(255, 140, 0, 1);
+#define ORANGE slSetForeColor(255, 100, 0, 1);
 #define RED slSetForeColor(255, 0, 0, 1);
 #define GREEN slSetForeColor(0, 255, 0, 1);
 #define BLUE slSetForeColor(0, 0, 255, 1);

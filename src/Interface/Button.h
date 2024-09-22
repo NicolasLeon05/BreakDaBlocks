@@ -13,8 +13,8 @@ namespace Button
 
 	Button Create(const char* text, float recX, float recY, float recWidth, float recHeight);
 
-	void IsButtonSelected(Button& button);
+	bool IsButtonSelected(Button& button);
 
-	bool IsButtonPressed(Button button);
+	bool IsButtonPressed(Button& button);
 }
 

@@ -4,6 +4,7 @@
 #include "Scene_Gameplay.h"
 #include "Scene_MainMenu.h"
 #include "Button.h"
+#include <iostream>
 
 namespace Game
 {

@@ -77,12 +77,12 @@ namespace Blocks
 
 					case MODIFIER::SLOWER:
 					{
-						SetColor(COLOR::BROWN);
+						SetColor(COLOR::WHITE);
 						break;
 					}
 
 					default:
-						SetColor(COLOR::DARK_RED);
+						SetColor(COLOR::BLACK);
 						break;
 					}
 					slRectangleFill(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);

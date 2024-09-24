@@ -79,12 +79,15 @@ namespace Gameplay
 
 	void Draw()
 	{
-		string lifeText = "Lives " + to_string(player.lives);
-		slText(30, screenHeight - 30, lifeText);
+		slSetFontSize(30);
+		WHITE
+		string lifeText = "Lives: " + to_string(player.lives);
+		slText(70, screenHeight - 30, lifeText.data());
 
-		string blockText = "Lives " + to_string(blocksDestroyed) + "/" + to_string(totalBlocks);
-		slText(30, screenHeight - 30, blockText);
+		string blockText = "Blocks: " + to_string(blocksDestroyed) + "/" + to_string(totalBlocks);
+		slText(screenWidth - 240, screenHeight - 30, blockText.data());
 
+		slSetFontSize(baseFontSize);
 		P::Draw();
 		B::Draw();
 		Blocks::Draw();

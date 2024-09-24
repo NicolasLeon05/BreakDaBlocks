@@ -9,7 +9,9 @@ namespace Colors
 		BLUE, 
 		GREEN, 
 		RED, 
-		DARK_RED
+		DARK_RED,
+		YELLOW,
+		BROWN
 	};
 
 	void SetColor(COLOR color);

@@ -1,14 +1,19 @@
 #pragma once
 #include "Rectangle.h"
 #include "Constants.h"
+#include "Modifier.h"
 
 using namespace Constants;
+using namespace Modifiers;
+using namespace Rectangle;
 
 namespace Blocks
 {
 	struct Block
 	{
-		Rectangle::Rec rectangle;
+		Rec rectangle;
+		MODIFIER modifier;
+		bool hasModifier;
 		bool isDestroyed;
 	};
 
@@ -17,6 +22,5 @@ namespace Blocks
 	void Init();
 
 	void Draw();
-
 }
 

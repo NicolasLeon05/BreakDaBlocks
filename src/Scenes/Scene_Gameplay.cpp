@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "Block.h"
 #include "Color.h"
+#include "Modifier.h"
 #include <cmath>
 #include <string>;
 
@@ -16,6 +17,7 @@ using namespace B;
 using namespace Blocks;
 using namespace Rectangle;
 using namespace Colors;
+using namespace Modifiers;
 using namespace std;
 
 
@@ -226,6 +228,7 @@ namespace Gameplay
 						CollideWithBlock(blocks[i][j]);
 						blocks[i][j].isDestroyed = true;
 						blocksDestroyed++;
+						ApplyModifier(player, blocks[i][j].modifier);
 						AccelerateBall();
 					}
 				}

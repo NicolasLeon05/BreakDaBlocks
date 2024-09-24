@@ -24,16 +24,7 @@ namespace Pause
 
     void Draw()
     {
-        if (resume.isSelected)
-            RED
-        else
-            slSetForeColor(255, 0, 0, 0.65f);
         Bton::Draw(resume);
-
-        if (goMenu.isSelected)
-            RED
-        else
-            slSetForeColor(255, 0, 0, 0.65f);
         Bton::Draw(goMenu);
     }
 }

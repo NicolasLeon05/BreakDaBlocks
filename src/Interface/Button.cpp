@@ -8,6 +8,10 @@ namespace Button
 {
 	void Draw(Button button)
 	{
+		if (button.isSelected)
+			RED
+		else
+			slSetForeColor(255, 0, 0, 0.65f);
 		slRectangleFill(button.rectangle.x, button.rectangle.y, button.rectangle.width, button.rectangle.height);
 		WHITE
 			slText(button.rectangle.x - 5, button.rectangle.y - (button.rectangle.height / 3) + 5, button.text);

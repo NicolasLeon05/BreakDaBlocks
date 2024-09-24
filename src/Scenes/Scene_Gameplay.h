@@ -2,10 +2,10 @@
 
 namespace Gameplay
 {
-void Init();
+	void Init();
 
-bool Update();
+	bool Update();
 
-void Draw();
+	void Draw();
 }
 

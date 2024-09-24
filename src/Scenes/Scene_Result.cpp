@@ -29,16 +29,7 @@ namespace Result
 			else
 					slText(screenWidth / 2, screenHeight / 3 * 2, "YOU WON!");
 
-		if (playAgain.isSelected)
-			RED
-		else
-			slSetForeColor(255, 0, 0, 0.65f);
 		Draw(playAgain);
-
-		if (goMenu.isSelected)
-			RED
-		else
-			slSetForeColor(255, 0, 0, 0.65f);
 		Draw(goMenu);
 	}
 }

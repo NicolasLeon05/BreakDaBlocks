@@ -11,6 +11,7 @@ using namespace Button;
 using namespace MainMenu;
 using namespace Pause;
 using namespace Result;
+using namespace Constants;
 
 namespace Game
 {

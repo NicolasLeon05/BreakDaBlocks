@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "sl.h"
 
+using namespace Constants;
 
 namespace Player
 {

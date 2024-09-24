@@ -1,6 +1,8 @@
 #pragma once
 #include "Constants.h"
 
+using namespace Constants;
+
 namespace Ball
 {
 	struct Ball

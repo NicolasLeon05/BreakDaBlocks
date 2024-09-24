@@ -2,6 +2,8 @@
 #include "Rectangle.h"
 #include "Constants.h"
 
+using namespace Constants;
+
 namespace Blocks
 {
 	struct Block

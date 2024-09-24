@@ -2,6 +2,7 @@
 
 namespace Bton = Button;
 using namespace Bton;
+using namespace Constants;
 
 namespace Result
 {
@@ -32,9 +33,9 @@ namespace Result
 	{
 		WHITE
 			if (player.lives <= 0)
-				slText(screenWidth / 2, screenHeight / 3 * 2, "YOU LOST");
+				slText(screenWidth / 2, screenHeight / 3 * 2, "YOU LOST!");
 			else
-					slText(screenWidth / 2, screenHeight / 3 * 2, "YOU WON");
+					slText(screenWidth / 2, screenHeight / 3 * 2, "YOU WON!");
 
 		if (playAgain.isSelected)
 			RED

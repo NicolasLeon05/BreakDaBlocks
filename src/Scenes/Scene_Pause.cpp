@@ -1,6 +1,8 @@
 #include "Scene_Pause.h"
 #include "Constants.h"
 
+using namespace Constants;
+
 namespace Pause
 {
     Button::Button resume;

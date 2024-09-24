@@ -8,14 +8,15 @@ namespace MainMenu
 {
 
 	Button::Button play;
-	Button::Button tutorial;
+	Button::Button controls;
 	Button::Button exit;
 
 	void Init()
 	{
-		play = Button::Create("Play", screenWidth/2, screenHeight/5 * 3, 270, 60);
-		tutorial = Button::Create("Tutorial", screenWidth / 2, screenHeight / 5 * 2, 270, 60);
-		exit = Button::Create("Exit", screenWidth / 2, screenHeight / 5, 270, 60);
+		const float width = 300;
+		play = Button::Create("Play", screenWidth/2, screenHeight/5 * 3, width, 60);
+		controls = Button::Create("Controls", screenWidth / 2, screenHeight / 5 * 2, width, 60);
+		exit = Button::Create("Exit", screenWidth / 2, screenHeight / 5, width, 60);
 	}
 
 	void Draw()
@@ -32,11 +33,11 @@ namespace MainMenu
 			slSetForeColor(255, 0, 0, 0.65f);
 		Button::Draw(play);
 
-		if (tutorial.isSelected)
+		if (controls.isSelected)
 			RED
 		else
 			slSetForeColor(255, 0, 0, 0.65f);
-		Button::Draw(tutorial);
+		Button::Draw(controls);
 
 		if (exit.isSelected)
 			RED

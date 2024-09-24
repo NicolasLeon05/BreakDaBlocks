@@ -54,7 +54,7 @@ namespace Gameplay
 	}
 
 	bool Update()
-	{	
+	{
 		MovePlayer();
 
 		if (!lifeLost)
@@ -81,11 +81,11 @@ namespace Gameplay
 	{
 		slSetFontSize(30);
 		WHITE
-		string lifeText = "Lives: " + to_string(player.lives);
-		slText(70, screenHeight - 30, lifeText.data());
+			string lifeText = "Lives: " + to_string(player.lives);
+		slText(80, screenHeight - 30, lifeText.data());
 
 		string blockText = "Blocks: " + to_string(blocksDestroyed) + "/" + to_string(totalBlocks);
-		slText(screenWidth - 240, screenHeight - 30, blockText.data());
+		slText(screenWidth - 140, screenHeight - 30, blockText.data());
 
 		slSetFontSize(baseFontSize);
 		P::Draw();
@@ -188,15 +188,15 @@ namespace Gameplay
 
 
 			//collision on the sides
-			if (ball.x < block.rectangle.x - block.rectangle.width / 2 || ball.x > block.rectangle.x + block.rectangle.width / 2)
+			if (ball.x < block.rectangle.x - block.rectangle.width / 2) //Left side collision
 			{
 				ball.speedX *= -1;
-
-				//Corrects ball position x
-				if (ball.x < block.rectangle.x - block.rectangle.width / 2)
-					ball.x = block.rectangle.x - block.rectangle.width / 2 - ball.radius - 1;
-				else
-					ball.x = block.rectangle.x + block.rectangle.width / 2 + ball.radius + 1;
+				ball.x = block.rectangle.x - block.rectangle.width / 2 - ball.radius - 1;
+			}
+			else if (ball.x > block.rectangle.x + block.rectangle.width / 2) //Right side collision
+			{
+				ball.speedX *= -1;
+				ball.x = block.rectangle.x + block.rectangle.width / 2 + ball.radius + 1;
 			}
 			else //Collision on the top/bottom
 			{

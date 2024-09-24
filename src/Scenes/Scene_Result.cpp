@@ -10,22 +10,14 @@ namespace Result
 	Bton::Button goMenu;
 
 	void Init()
-	{
-		int width = 400;
-		// Suma del ancho de ambos rectángulos
-		int totalRectanglesWidth = width + width;
+	{		
+		const float width = 400;
+		float spaceBetween = GetSpaceBetween(width, 2);
 
-		// Espacio restante en la pantalla
-		int remainingSpace = screenWidth - totalRectanglesWidth;
+		int playAgainX = spaceBetween + (width / 2);
+		int goMenuX = playAgainX + width + spaceBetween;
 
-		// Dividir el espacio restante entre 3 (dos espacios laterales y uno intermedio)
-		int spaceBetween = remainingSpace / 3;
-
-		// Calcular las posiciones de los rectángulos
-		int playAgainX = spaceBetween + (width / 2);  // Posición del primer rectángulo (playAgain)
-		int goMenuX = playAgainX + width + spaceBetween;  // Posición del segundo rectángulo (goMenu)
-
-		playAgain = Create("Play Again", playAgainX, screenHeight / 5 * 2, 400, 60);
+		playAgain = Create("Play Again", playAgainX, screenHeight / 5 * 2, width, 60);
 		goMenu = Create("Menu", goMenuX, screenHeight / 5 * 2, 250, 60);
 	}
 

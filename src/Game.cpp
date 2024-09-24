@@ -1,8 +1,9 @@
 #include "Game.h"
 #include "sl.h"
 #include "Constants.h"
-#include "Scene_Gameplay.h"
 #include "Scene_MainMenu.h"
+#include "Scene_Controls.h"
+#include "Scene_Gameplay.h"
 #include "Scene_Pause.h"
 #include "Scene_Result.h"
 #include "Button.h"
@@ -12,6 +13,7 @@ using namespace MainMenu;
 using namespace Pause;
 using namespace Result;
 using namespace Constants;
+using namespace Controls;
 
 namespace Game
 {
@@ -27,6 +29,7 @@ namespace Game
 
 	int font;
 
+	static bool viewingControls;
 	static bool gameStarted;
 	static bool gamePaused;
 	static bool waitingToResume;
@@ -57,9 +60,11 @@ namespace Game
 		gameStarted = false;
 		gamePaused = false;
 		waitingToResume = false;
-		gameEnded = false;;
+		gameEnded = false;
+		viewingControls = false;
 
 		MainMenu::Init();
+		Controls::Init();
 		Gameplay::Init();
 		Pause::Init();
 		Result::Init();
@@ -114,9 +119,16 @@ namespace Game
 				}
 			}
 		}
-		else if (IsButtonPressed(play)) //Starts game
+		else //Menu
 		{
-			gameStarted = true;
+			if (viewingControls && IsButtonPressed(Controls::goMenu))
+				viewingControls = false;
+
+			if (IsButtonPressed(controls)) //Controls scene
+				viewingControls = true;
+
+			if (IsButtonPressed(play)) //Gameplay scene
+				gameStarted = true;
 		}
 	}
 
@@ -126,16 +138,19 @@ namespace Game
 		{		
 			Result::Draw(Player::player);
 		}
-		else if (!gameStarted) //Main Menu scene
-		{
-			MainMenu::Draw();
-		}
-		else
+		else if (gameStarted) //Main Menu scene
 		{
 			if (gamePaused) //Pause scene 
 				Pause::Draw();
 			else			//Gameplay scene
 				Gameplay::Draw();
+		}
+		else
+		{
+			if (!viewingControls)
+				MainMenu::Draw();
+			else
+				Controls::Draw();	
 		}
 
 		slRender();

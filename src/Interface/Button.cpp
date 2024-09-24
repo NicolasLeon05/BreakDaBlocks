@@ -2,6 +2,8 @@
 #include "Constants.h"
 #include <iostream>
 
+using namespace Constants;
+
 namespace Button
 {
 	void Draw(Button button)
@@ -53,5 +55,14 @@ namespace Button
 			return true;
 		else
 			return false;
-	}	
+	}
+
+	float GetSpaceBetween(float width, int buttons)
+	{
+		float totalRectanglesWidth = width * buttons;
+		float remainingSpace = screenWidth - totalRectanglesWidth;
+
+		return remainingSpace / (buttons + 1);
+	}
+
 }

@@ -1,17 +1,24 @@
 #include "Scene_Pause.h"
 #include "Constants.h"
 
+namespace Bton = Button;
+using namespace Bton;
 using namespace Constants;
 
 namespace Pause
 {
-    Button::Button resume;
-    Button::Button goMenu;
+    Bton::Button resume;
+    Bton::Button goMenu;
 
     void Init()
     {
-        resume = Button::Create("Resume", screenWidth / 5 * 2 - resume.rectangle.width, screenHeight / 2, 250, 60);
-        goMenu = Button::Create("Menu", screenWidth / 5 * 4 - goMenu.rectangle.width, screenHeight / 2, 250, 60);
+        const float width = 250;
+        float spaceBetween = GetSpaceBetween(width, 2);
+
+        int resumeX = spaceBetween + (width / 2);
+        int goMenuX = resumeX + width + spaceBetween;
+        resume = Create("Resume", resumeX, screenHeight / 2, width, 60);
+        goMenu = Create("Menu", goMenuX, screenHeight / 2, width, 60);
     }
 
 
@@ -21,12 +28,12 @@ namespace Pause
             RED
         else
             slSetForeColor(255, 0, 0, 0.65f);
-        Button::Draw(resume);
+        Bton::Draw(resume);
 
         if (goMenu.isSelected)
             RED
         else
             slSetForeColor(255, 0, 0, 0.65f);
-        Button::Draw(goMenu);
+        Bton::Draw(goMenu);
     }
 }

@@ -9,7 +9,7 @@ namespace MainMenu
 	void Draw();
 
 	extern Bton::Button play;
-	extern Bton::Button tutorial;
+	extern Bton::Button controls;
 	extern Bton::Button exit;
 }
 

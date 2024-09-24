@@ -18,5 +18,7 @@ namespace Button
 	bool IsButtonSelected(Button& button);
 
 	bool IsButtonPressed(Button& button);
+
+	float GetSpaceBetween(float width, int buttons);
 }
 

@@ -23,10 +23,11 @@ namespace Blocks
 			{
 				blocks[i][j].rectangle.height = blockHeight;
 				blocks[i][j].rectangle.width = blockWidth;
-				blocks[i][j].rectangle.x = startPosX + (blockWidth * j);
-				blocks[i][j].rectangle.y = startPosY - (blockHeight * i);
+				blocks[i][j].rectangle.x = startPosX + (blockWidth + blockSpacing) * j;
+				blocks[i][j].rectangle.y = startPosY - (blockHeight + blockSpacing) * i;
 				blocks[i][j].isDestroyed = false;
-				if (rand() % 100 + 1 <= modifierChance) //Tiene un modificador
+
+				if (rand() % 100 + 1 <= modifierChance)
 				{
 					blocks[i][j].hasModifier = true;
 					blocks[i][j].modifier = MODIFIER(rand() % 4 + 1);

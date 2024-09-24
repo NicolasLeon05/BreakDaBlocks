@@ -2,8 +2,10 @@
 #include "Player.h"
 #include <iostream>
 #include "sl.h"
+#include "Color.h"
 
 using namespace Player;
+using namespace Colors;
 
 namespace Ball
 {
@@ -26,8 +28,8 @@ namespace Ball
 
 	void Draw()
 	{
-		RED
-			slCircleFill(ball.x, ball.y, ball.radius, 100);
+		SetColor(COLOR::RED);
+		slCircleFill(ball.x, ball.y, ball.radius, 100);
 	}
 
 	float GenerateRandomAngle()

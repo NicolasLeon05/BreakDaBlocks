@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Interface\Button.cpp" />
+    <ClCompile Include="src\Interface\Color.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\Ball.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
@@ -34,6 +35,7 @@
   <ItemGroup>
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Interface\Button.h" />
+    <ClInclude Include="src\Interface\Color.h" />
     <ClInclude Include="src\Objects\Ball.h" />
     <ClInclude Include="src\Objects\Block.h" />
     <ClInclude Include="src\Objects\Player.h" />

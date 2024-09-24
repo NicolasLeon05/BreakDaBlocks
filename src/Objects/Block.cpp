@@ -1,6 +1,8 @@
 #include "Block.h"
 #include "sl.h"
+#include "Color.h"
 
+using namespace Colors;
 
 namespace Blocks
 {
@@ -32,10 +34,10 @@ namespace Blocks
 			{
 				if (!blocks[i][j].isDestroyed)
 				{
-					GREEN
-						slRectangleFill(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
-					BLACK
-						slRectangleOutline(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
+					SetColor(COLOR::GREEN);
+					slRectangleFill(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
+					SetColor(COLOR::BLACK);
+					slRectangleOutline(blocks[i][j].rectangle.x, blocks[i][j].rectangle.y, blocks[i][j].rectangle.width, blocks[i][j].rectangle.height);
 				}
 			}
 		}

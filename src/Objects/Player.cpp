@@ -1,7 +1,9 @@
 #include "Player.h"
 #include "Constants.h"
 #include "sl.h"
+#include "Color.h"
 
+using namespace Colors;
 using namespace Constants;
 
 namespace Player
@@ -19,7 +21,7 @@ namespace Player
 	}
 	void Draw()
 	{
-		BLUE
-			slRectangleFill(player.paddle.x, player.paddle.y, player.paddle.width, player.paddle.height);
+		SetColor(COLOR::BLUE);
+		slRectangleFill(player.paddle.x, player.paddle.y, player.paddle.width, player.paddle.height);
 	}
 }

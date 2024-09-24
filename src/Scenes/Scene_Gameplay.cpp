@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Constants.h"
 #include "Block.h"
+#include "Color.h"
 #include <cmath>
 #include <string>;
 
@@ -14,6 +15,7 @@ using namespace P;
 using namespace B;
 using namespace Blocks;
 using namespace Rectangle;
+using namespace Colors;
 using namespace std;
 
 
@@ -80,8 +82,8 @@ namespace Gameplay
 	void Draw()
 	{
 		slSetFontSize(30);
-		WHITE
-			string lifeText = "Lives: " + to_string(player.lives);
+		SetColor(COLOR::WHITE);
+		string lifeText = "Lives: " + to_string(player.lives);
 		slText(80, screenHeight - 30, lifeText.data());
 
 		string blockText = "Blocks: " + to_string(blocksDestroyed) + "/" + to_string(totalBlocks);

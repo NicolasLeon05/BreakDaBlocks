@@ -1,20 +1,24 @@
 #include "Button.h"
 #include "Constants.h"
+#include "Color.h"
 #include <iostream>
 
 using namespace Constants;
+using namespace Colors;
 
 namespace Button
 {
 	void Draw(Button button)
 	{
 		if (button.isSelected)
-			RED
+			SetColor(COLOR::RED);
 		else
-			slSetForeColor(255, 0, 0, 0.65f);
+			SetColor(COLOR::DARK_RED);
+
 		slRectangleFill(button.rectangle.x, button.rectangle.y, button.rectangle.width, button.rectangle.height);
-		WHITE
-			slText(button.rectangle.x - 5, button.rectangle.y - (button.rectangle.height / 3) + 5, button.text);
+		
+		SetColor(COLOR::WHITE);
+		slText(button.rectangle.x - 5, button.rectangle.y - (button.rectangle.height / 3) + 5, button.text);
 	}
 
 	Button Create(const char* text, float recX, float recY, float recWidth, float recHeight)
@@ -31,7 +35,7 @@ namespace Button
 	}
 
 	bool IsButtonSelected(Button& button)
-	{		
+	{
 		//Mouse hover
 		if (slGetMouseX() > button.rectangle.x - (button.rectangle.width / 2) &&
 			slGetMouseX() < button.rectangle.x + (button.rectangle.width / 2) &&

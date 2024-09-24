@@ -1,8 +1,12 @@
 #include "Scene_Result.h"
+#include "Color.h"
 
 namespace Bton = Button;
 using namespace Bton;
 using namespace Constants;
+using namespace Colors;
+using namespace Colors;
+
 
 namespace Result
 {
@@ -10,7 +14,7 @@ namespace Result
 	Bton::Button goMenu;
 
 	void Init()
-	{		
+	{
 		const float width = 400;
 		float spaceBetween = GetSpaceBetween(width, 2);
 
@@ -23,11 +27,11 @@ namespace Result
 
 	void Draw(Player::Player player)
 	{
-		WHITE
-			if (player.lives <= 0)
-				slText(screenWidth / 2, screenHeight / 3 * 2, "YOU LOST!");
-			else
-					slText(screenWidth / 2, screenHeight / 3 * 2, "YOU WON!");
+		SetColor(COLOR::WHITE);
+		if (player.lives <= 0)
+			slText(screenWidth / 2, screenHeight / 3 * 2, "YOU LOST!");
+		else
+			slText(screenWidth / 2, screenHeight / 3 * 2, "YOU WON!");
 
 		Draw(playAgain);
 		Draw(goMenu);

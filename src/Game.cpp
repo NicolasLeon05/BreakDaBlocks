@@ -36,6 +36,7 @@ namespace Game
 	static bool gameEnded;
 
 	static float resumeTimer = 0.0f;
+	static float pauseTimer = 0.0f;
 
 	void Run()
 	{
@@ -95,20 +96,26 @@ namespace Game
 				else
 				{
 					resumeTimer += slGetDeltaTime();
-					if (resumeTimer >= 1)
+					if (resumeTimer >= 0.2f)
 					{
 						waitingToResume = false;
 						resumeTimer = 0.0f;
 					}
 				}
 
-				if (slGetKey(SL_KEY_ESCAPE)) //Pauses game
+				pauseTimer += slGetDeltaTime();
+				if ((slGetKey(SL_KEY_ESCAPE) && pauseTimer > 0.2f)) //Pauses game
+				{
+					pauseTimer = 0.0f;
 					gamePaused = true;
+				}
 			}
 			else //Pause Scene
 			{
-				if (IsButtonPressed(resume) || slGetKey(SL_KEY_ESCAPE)) //Resume gampeplay
+				pauseTimer += slGetDeltaTime();
+				if (IsButtonPressed(resume) || (slGetKey(SL_KEY_ESCAPE) && pauseTimer > 0.2f)) //Resume gampeplay
 				{
+					pauseTimer = 0.0f;
 					waitingToResume = true;
 					gamePaused = false;
 				}
@@ -170,6 +177,7 @@ namespace Game
 		waitingToResume = false;
 		gameEnded = false;
 
+		pauseTimer = 0.0f;
 		resumeTimer = 0.0f;
 	}
 }

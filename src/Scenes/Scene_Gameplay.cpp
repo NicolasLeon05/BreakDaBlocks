@@ -200,9 +200,15 @@ namespace Gameplay
 				ball.speedX *= -1;
 				ball.x = block.rectangle.x + block.rectangle.width / 2 + ball.radius + 1;
 			}
-			else //Collision on the top/bottom
+			else if (block.rectangle.y + block.rectangle.height / 2 > ball.y) //Top Collision
 			{
 				ball.speedY *= -1;
+				ball.y = block.rectangle.y - block.rectangle.height / 2 - ball.radius - 1;
+			}
+			else if (block.rectangle.y - block.rectangle.height / 2 < ball.y) //Bottom Collision
+			{
+				ball.speedY *= -1;
+				ball.y = block.rectangle.y + block.rectangle.height / 2 + ball.radius + 1;
 			}
 		}
 	}
@@ -229,14 +235,14 @@ namespace Gameplay
 
 	void MovePlayer()
 	{
-		if (slGetKey(SL_KEY_LEFT))
+		if (slGetKey(SL_KEY_LEFT) || slGetKey('A') || slGetKey('a'))
 		{
 			if (player.paddle.x - player.paddle.width / 2 <= 0)
 				player.paddle.x = player.paddle.width / 2;
 			else
 				player.paddle.x -= player.speed * slGetDeltaTime();
 		}
-		else if (slGetKey(SL_KEY_RIGHT))
+		else if (slGetKey(SL_KEY_RIGHT) || slGetKey('D') || slGetKey('d'))
 		{
 			if (player.paddle.x + player.paddle.width / 2 >= screenWidth)
 				player.paddle.x = screenWidth - player.paddle.width / 2;

@@ -27,7 +27,7 @@ namespace MainMenu
 	{
 		slSetFontSize(100);
 		SetColor(COLOR::RED);
-		slText(screenWidth / 2, screenHeight / 5 * 4, "BREAKOUT");
+		slText(screenWidth / 2, screenHeight / 5 * 4, "BreakDaBlocks");
 		slSetFontSize(baseFontSize);
 
 		Bton::Draw(play);

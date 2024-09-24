@@ -32,3 +32,9 @@ const int totalBlocks = blockCols * blockRows; //72
 
 //Paddle Speed
 const int paddleSpeed = 700;
+
+//Keys
+const char KEY_SPACE = 32;
+
+//Font size 
+const int baseFontSize = 50;

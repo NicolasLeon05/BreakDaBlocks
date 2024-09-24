@@ -18,6 +18,11 @@ namespace MainMenu
 
 	void Draw()
 	{
+		slSetFontSize(100);
+		RED
+			slText(screenWidth / 2, screenHeight / 5 * 4, "BREAKOUT");
+		slSetFontSize(baseFontSize);
+
 		//Hacer funcion
 		if (play.isSelected)
 			RED
@@ -36,5 +41,11 @@ namespace MainMenu
 		else
 			slSetForeColor(255, 0, 0, 0.65f);
 		Button::Draw(exit);
+
+		slSetFontSize(25);
+		float textX = slGetTextWidth("Developed by: Nicolas Leon") / 2; 
+		BLUE
+			slText(textX + 25, 25, "Developed by: Nicolas Leon");
+		slSetFontSize(baseFontSize);
 	}
 }

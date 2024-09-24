@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "Block.h"
 #include <cmath>
+#include <string>;
 
 namespace P = Player;
 namespace B = Ball;
@@ -13,12 +14,11 @@ using namespace P;
 using namespace B;
 using namespace Blocks;
 using namespace Rectangle;
+using namespace std;
 
 
 namespace Gameplay
 {
-	static const char KEY_SPACE = 32;
-
 	static bool lifeLost;
 
 	static int blocksDestroyed;
@@ -79,6 +79,12 @@ namespace Gameplay
 
 	void Draw()
 	{
+		string lifeText = "Lives " + to_string(player.lives);
+		slText(30, screenHeight - 30, lifeText);
+
+		string blockText = "Lives " + to_string(blocksDestroyed) + "/" + to_string(totalBlocks);
+		slText(30, screenHeight - 30, blockText);
+
 		P::Draw();
 		B::Draw();
 		Blocks::Draw();

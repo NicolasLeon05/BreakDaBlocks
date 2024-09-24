@@ -10,17 +10,31 @@ namespace Result
 
 	void Init()
 	{
-		playAgain = Create("Play Again", screenWidth / 5 * 2 - playAgain.rectangle.width, screenHeight / 2, 400, 60);
-		goMenu = Create("Menu", screenWidth / 5 * 4 - goMenu.rectangle.width, screenHeight / 2, 250, 60);
+		int width = 400;
+		// Suma del ancho de ambos rectángulos
+		int totalRectanglesWidth = width + width;
+
+		// Espacio restante en la pantalla
+		int remainingSpace = screenWidth - totalRectanglesWidth;
+
+		// Dividir el espacio restante entre 3 (dos espacios laterales y uno intermedio)
+		int spaceBetween = remainingSpace / 3;
+
+		// Calcular las posiciones de los rectángulos
+		int playAgainX = spaceBetween + (width / 2);  // Posición del primer rectángulo (playAgain)
+		int goMenuX = playAgainX + width + spaceBetween;  // Posición del segundo rectángulo (goMenu)
+
+		playAgain = Create("Play Again", playAgainX, screenHeight / 5 * 2, 400, 60);
+		goMenu = Create("Menu", goMenuX, screenHeight / 5 * 2, 250, 60);
 	}
 
 	void Draw(Player::Player player)
 	{
 		WHITE
 			if (player.lives <= 0)
-				slText(screenWidth / 2, screenHeight / 2, "YOU LOST");
+				slText(screenWidth / 2, screenHeight / 3 * 2, "YOU LOST");
 			else
-					slText(screenWidth / 2, screenHeight / 2, "YOU WON");
+					slText(screenWidth / 2, screenHeight / 3 * 2, "YOU WON");
 
 		if (playAgain.isSelected)
 			RED

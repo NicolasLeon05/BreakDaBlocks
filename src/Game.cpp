@@ -50,7 +50,7 @@ namespace Game
 	{
 		slWindow(screenWidth, screenHeight, "Breakout", false);
 		font = slLoadFont("res/Fonts/Silkscreen-Regular.ttf");
-		slSetFont(font, 50);
+		slSetFont(font, baseFontSize);
 		slSetTextAlign(SL_ALIGN_CENTER);
 
 		gameStarted = false;
